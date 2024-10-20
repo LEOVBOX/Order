@@ -97,6 +97,7 @@ class ViewController: UIViewController {
         tableView.register(TitleCell.self, forCellReuseIdentifier: String(describing: TitleCell.self))
         tableView.register(PromoCell.self, forCellReuseIdentifier: String(describing: PromoCell.self))
         tableView.register(ButtonCell.self, forCellReuseIdentifier: String(describing: ButtonCell.self))
+        tableView.register(ResultCell.self, forCellReuseIdentifier: String(describing: ResultCell.self))
         tableView.separatorStyle = .none
         return tableView
     }()
@@ -174,9 +175,12 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
             
         case .result(let result):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TitleCell.self)) as? TitleCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ResultCell.self)) as? ResultCell else {
                 return UITableViewCell()
             }
+            cell.viewModel = result
+            cell.selectionStyle = .none
+            return cell
             
         case .button(let button):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ButtonCell.self)) as? ButtonCell else {
