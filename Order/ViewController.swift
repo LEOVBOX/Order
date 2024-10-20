@@ -162,6 +162,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
                 return UITableViewCell()
             }
             cell.viewModel = promo
+            cell.selectionStyle = .none
             return cell
         
         case .info(let info):
@@ -169,6 +170,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
                 return UITableViewCell()
             }
             cell.viewModel = info
+            cell.selectionStyle = .none
             return cell
             
         case .result(let result):
@@ -182,6 +184,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             }
             
             cell.viewModel = button
+            cell.selectionStyle = .none
             return cell
         }
         
@@ -189,8 +192,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        print("select on = \(indexPath)")
+        
     }
 }
 
