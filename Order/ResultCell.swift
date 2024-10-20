@@ -203,7 +203,7 @@ class ResultCell: UITableViewCell {
         paymentDiscountValue.translatesAutoresizingMaskIntoConstraints = false
         
         paymentDiscountValue.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
-        paymentDiscountValue.topAnchor.constraint(equalTo: paymentDiscountValue.bottomAnchor, constant: 10).isActive = true
+        paymentDiscountValue.topAnchor.constraint(equalTo: promocodesValue.bottomAnchor, constant: 10).isActive = true
         
         
         
@@ -217,14 +217,13 @@ class ResultCell: UITableViewCell {
         contentView.addSubview(summValue)
         summValue.translatesAutoresizingMaskIntoConstraints = false
         
-        summValue.topAnchor.constraint(equalTo: paymentDiscountHeader.bottomAnchor, constant: 32).isActive = true
+        summValue.topAnchor.constraint(equalTo: paymentDiscountValue.bottomAnchor, constant: 32).isActive = true
         summValue.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
         
         contentView.addSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false
         
         button.topAnchor.constraint(equalTo: summValue.bottomAnchor, constant: 16).isActive = true
-        button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -30).isActive = true
         button.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32).isActive = true
         button.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
         

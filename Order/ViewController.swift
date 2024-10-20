@@ -74,7 +74,7 @@ class ViewController: UIViewController {
        
         var summ: Double = 0
         var count = 0
-        var price = summ
+        var price = 0
         
         for product in order.products {
             summ += product.price
