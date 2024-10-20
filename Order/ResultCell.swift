@@ -17,8 +17,9 @@ class ResultCell: UITableViewCell {
     var bgColor: UIColor?
     
     lazy var button: UIButton = {
-        let button = UIButton(type: .custom)
-        button.titleLabel?.text = "Оформить заказ"
+        let button = UIButton(type: .system)
+        button.setTitleColor(.white, for: .normal)
+        button.setTitle("Оформление заказа", for: .normal) 
         button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         button.addTarget(self, action: #selector(buttonReleased), for: [.touchUpInside, .touchUpOutside])
         button.backgroundColor = UIColor(hexString: "#FF4611")
@@ -155,7 +156,7 @@ class ResultCell: UITableViewCell {
     
     
     private func setupUI() {
-        
+        contentView.backgroundColor = UIColor(hexString: "#F6F6F6")
         contentView.addSubview(priceHeader)
         priceHeader.translatesAutoresizingMaskIntoConstraints = false
         
