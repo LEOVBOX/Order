@@ -53,6 +53,7 @@ class ViewController: UIViewController {
         viewModel.cellViewModels.append(.init(type: .info(.init(title: "Промокоды", info: "На один товар можно применить только один промокод"))))
         
         viewModel.cellViewModels.append(.init(type: .button(.init(image: UIImage(named: "Promocode"), title: "Применить промокод", backgroundHexColor: "#FF46111A", titleHexColor: "#FF4611"))))
+        
 
         // Добавляем все промокоды из заказа
         for promocode in order.promocodes {
@@ -65,19 +66,23 @@ class ViewController: UIViewController {
             )
             viewModel.cellViewModels.append(.init(type: .promo(promoViewModel)))
         }
+        
+        
+        
+        viewModel.cellViewModels.append(.init(type: .button(.init(image: nil, title: "Скрыть промокоды", backgroundHexColor: "#FF46100", titleHexColor: "#FF4611"))))
 
        
-//        
-//        for product in order.products {
-//            let resultViewModel = TableViewModel.ViewModelType.Result(
-//                summ: product.price,
-//                productsCount: 1, // Количество товаров
-//                baseDiscount: order.baseDiscount,
-//                promocodesDiscount: 0.0, // Промокоды пока не применены
-//                paymentDiscount: order.paymentDiscount
-//            )
-//            viewModel.cellViewModels.append(.init(type: .result(resultViewModel)))
-//        }
+        var summ: Double = 0
+        var count = 0
+        var price = summ
+        
+        for product in order.products {
+            summ += product.price
+            count+=1
+        }
+        
+        let resultViewModel = TableViewModel.ViewModelType.Result(summ: summ, productsCount: count, baseDiscount: order.baseDiscount, promocodesDiscount: 0, paymentDiscount: 0, price: summ)
+        viewModel.cellViewModels.append(.init(type: .result(resultViewModel)))
 
         tableView.reloadData()
     }

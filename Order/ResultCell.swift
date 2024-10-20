@@ -155,72 +155,77 @@ class ResultCell: UITableViewCell {
     
     
     private func setupUI() {
-        contentView.addSubview(button)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8).isActive = true
-        button.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
-        button.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16).isActive = true
-        button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8).isActive = true
         
         contentView.addSubview(priceHeader)
         priceHeader.translatesAutoresizingMaskIntoConstraints = false
         
-        contentView.addSubview(priceValue)
-        priceValue.translatesAutoresizingMaskIntoConstraints = false
-        
-        contentView.addSubview(discountHeader)
-        discountHeader.translatesAutoresizingMaskIntoConstraints = false
-        
-        contentView.addSubview(discountValue)
-        discountValue.translatesAutoresizingMaskIntoConstraints = false
-        
-        contentView.addSubview(promocodesHeader)
-        promocodesHeader.translatesAutoresizingMaskIntoConstraints = false
-        
-        contentView.addSubview(promocodesValue)
-        promocodesValue.translatesAutoresizingMaskIntoConstraints = false
-        
-        contentView.addSubview(paymentDiscountHeader)
-        paymentDiscountHeader.translatesAutoresizingMaskIntoConstraints = false
-        
-        contentView.addSubview(paymentDiscountValue)
-        paymentDiscountValue.translatesAutoresizingMaskIntoConstraints = false
-        
         priceHeader.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24).isActive = true
         priceHeader.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32).isActive = true
+        
+        contentView.addSubview(priceValue)
+        priceValue.translatesAutoresizingMaskIntoConstraints = false
         
         priceValue.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24).isActive = true
         priceValue.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
         
+        contentView.addSubview(discountHeader)
+        discountHeader.translatesAutoresizingMaskIntoConstraints = false
+        
         discountHeader.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32).isActive = true
         discountHeader.topAnchor.constraint(equalTo: priceHeader.bottomAnchor, constant: 10).isActive = true
+        
+        contentView.addSubview(discountValue)
+        discountValue.translatesAutoresizingMaskIntoConstraints = false
         
         discountValue.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
         discountValue.topAnchor.constraint(equalTo: priceValue.bottomAnchor, constant: 10).isActive = true
         
+        contentView.addSubview(promocodesHeader)
+        promocodesHeader.translatesAutoresizingMaskIntoConstraints = false
+        
         promocodesHeader.topAnchor.constraint(equalTo: discountHeader.bottomAnchor, constant: 10).isActive = true
-        promocodesHeader.leftAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
+        promocodesHeader.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32).isActive = true
+        
+        contentView.addSubview(promocodesValue)
+        promocodesValue.translatesAutoresizingMaskIntoConstraints = false
         
         promocodesValue.topAnchor.constraint(equalTo: discountValue.bottomAnchor, constant: 10).isActive = true
         promocodesValue.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
         
-        paymentDiscountHeader.leftAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
+        contentView.addSubview(paymentDiscountHeader)
+        paymentDiscountHeader.translatesAutoresizingMaskIntoConstraints = false
+        
+        paymentDiscountHeader.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32).isActive = true
         paymentDiscountHeader.topAnchor.constraint(equalTo: promocodesHeader.bottomAnchor, constant: 10).isActive = true
+        
+        contentView.addSubview(paymentDiscountValue)
+        paymentDiscountValue.translatesAutoresizingMaskIntoConstraints = false
         
         paymentDiscountValue.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
         paymentDiscountValue.topAnchor.constraint(equalTo: paymentDiscountValue.bottomAnchor, constant: 10).isActive = true
         
+        
+        
         contentView.addSubview(summHeader)
         summHeader.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        summHeader.topAnchor.constraint(equalTo: paymentDiscountHeader.bottomAnchor, constant: 32).isActive = true
+        summHeader.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32).isActive = true
         
         contentView.addSubview(summValue)
         summValue.translatesAutoresizingMaskIntoConstraints = false
         
-        summHeader.topAnchor.constraint(equalTo: paymentDiscountHeader.topAnchor, constant: 32).isActive = true
-        summHeader.leftAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
-        
         summValue.topAnchor.constraint(equalTo: paymentDiscountHeader.bottomAnchor, constant: 32).isActive = true
         summValue.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
+        
+        contentView.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        button.topAnchor.constraint(equalTo: summValue.bottomAnchor, constant: 16).isActive = true
+        button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -30).isActive = true
+        button.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32).isActive = true
+        button.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
         
         
     }
