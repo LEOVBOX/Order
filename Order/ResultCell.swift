@@ -16,39 +16,47 @@ class ResultCell: UITableViewCell {
     
     var bgColor: UIColor?
     
+    lazy var summaryVerticalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        return stackView
+    }()
+    
     lazy var button: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton(type: .custom)
         button.setTitleColor(.white, for: .normal)
-        button.setTitle("Оформление заказа", for: .normal) 
-        button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-        button.addTarget(self, action: #selector(buttonReleased), for: [.touchUpInside, .touchUpOutside])
+        button.setTitleColor(.black, for: .highlighted)
+        button.setTitle("Оформление заказа", for: .normal)
         button.backgroundColor = UIColor(hexString: "#FF4611")
         button.titleLabel?.textColor = .white
         button.layer.cornerRadius = 12
+        button.addTarget(self, action: #selector(makeOrderTapAnimation), for: .touchUpInside)
         return button
     }()
     
-    @objc func buttonPressed() {
-        UIView.animate(withDuration: 0.3) {
-            if let alphaValue = self.bgColor?.alpha() {
-                if (alphaValue >= 0.5) {
-                    self.button.backgroundColor = self.button.backgroundColor?.adjustAlpha(by: -0.5)
+    @objc func makeOrderTapAnimation() {
+        UIView.animate(withDuration: 0.3,
+            animations: {
+                self.button.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+            },
+            completion: { _ in
+                UIView.animate(withDuration: 0.3) {
+                    self.button.transform = CGAffineTransform.identity
                 }
-                else {
-                    self.button.backgroundColor = self.button.backgroundColor?.adjustAlpha(by: 0.5)
-                }
-            }
-            
-        }
+            })
     }
     
-    @objc func buttonReleased() {
-        UIView.animate(withDuration: 0.3) {
-            if let color = self.bgColor {
-                self.button.backgroundColor = color
-            }
-        }
-    }
+    lazy var seporatorLine: UIView = {
+        let seporatorLine = UIView()
+        seporatorLine.backgroundColor = UIColor(hexString: "#EAEAEA")
+        return seporatorLine
+    }()
+    
+    lazy var priceView = UIView()
+    lazy var discountView = UIView()
+    lazy var promocodesDiscountView = UIView()
+    lazy var paymentDiscountView = UIView()
+    lazy var summView = UIView()
 
     
     lazy var priceHeader: UILabel = {
@@ -132,101 +140,198 @@ class ResultCell: UITableViewCell {
         return label
     }()
     
+    lazy var oferteLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.numberOfLines = 2
+        let fullText = "Нажимая кнопку «Оформить заказ»,\nВы соглашаетесь с Условиями оферты"
+        let attributedText = NSMutableAttributedString(string: fullText)
+
+        // Указываем стиль для всей строки
+        attributedText.addAttribute(.foregroundColor, value: UIColor.gray, range: NSRange(location: 0, length: fullText.count))
+        attributedText.addAttribute(.font, value: UIFont(name: "Roboto", size: 12) ?? .systemFont(ofSize: 12), range: NSRange(location: 0, length: fullText.count))
+
+        // Указываем стиль для кликабельного текста
+        let linkTextRange = (fullText as NSString).range(of: "Условиями оферты")
+        attributedText.addAttribute(.foregroundColor, value: UIColor.black, range: linkTextRange)
+        attributedText.addAttribute(.font, value: UIFont(name: "Roboto", size: 12) ?? .systemFont(ofSize: 12), range: linkTextRange)
+
+        label.attributedText = attributedText
+
+        //let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapOnTerms))
+        //label.addGestureRecognizer(tapGesture)
+        return label
+    }()
+    
+    lazy var oferteButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Условиями оферты", for: .normal)
+        button.addTarget(self, action: #selector(tapAnimation), for: .touchUpInside)
+        return button
+    }()
+    
+    @objc func tapAnimation() {
+        UIView.animate(withDuration: 0.3,
+            animations: {
+                self.button.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+            },
+            completion: { _ in
+                UIView.animate(withDuration: 0.3) {
+                    self.button.transform = CGAffineTransform.identity
+                }
+            })
+    }
+    
+    
+    
     
     private func updateUI() {
         guard let viewModel else {
             return
         }
         
-        priceValue.text = "\(viewModel.price)"
-        promocodesValue.text = "\(viewModel.promocodesDiscount)"
+        priceValue.text = "\(viewModel.price) ₽"
+        promocodesValue.text = "\(viewModel.promocodesDiscount) ₽"
         if let baseDiscount = viewModel.baseDiscount {
-            discountValue.text = "\(baseDiscount)"
+            discountValue.text = "\(baseDiscount) ₽"
         }
         
         if let paymentDiscount = viewModel.paymentDiscount {
-            paymentDiscountValue.text = "\(paymentDiscount)"
+            paymentDiscountValue.text = "\(paymentDiscount) ₽"
         }
         
         priceHeader.text = "Цена за \(viewModel.productsCount) продукта"
         
-        summValue.text = "\(viewModel.summ)"
+        summValue.text = "\(viewModel.summ) ₽"
     }
     
+    lazy var mainView: UIView = {
+       let view = UIView()
+        view.backgroundColor = UIColor(hexString: "#F6F6F6")
+        return view
+    }()
     
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+    }
     
     private func setupUI() {
+        
         contentView.backgroundColor = UIColor(hexString: "#F6F6F6")
-        contentView.addSubview(priceHeader)
+        
+        // summaryVerticalStackView constraints
+        contentView.addSubview(summaryVerticalStackView)
+        summaryVerticalStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            summaryVerticalStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24),
+            summaryVerticalStackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32),
+            summaryVerticalStackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32)
+        ])
+        summaryVerticalStackView.spacing = 10
+        
+        // price
+        priceView.translatesAutoresizingMaskIntoConstraints = false
+        priceView.addSubview(priceHeader)
         priceHeader.translatesAutoresizingMaskIntoConstraints = false
+        priceHeader.leadingAnchor.constraint(equalTo: priceView.leadingAnchor).isActive = true
         
-        priceHeader.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24).isActive = true
-        priceHeader.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32).isActive = true
-        
-        contentView.addSubview(priceValue)
+        priceView.addSubview(priceValue)
         priceValue.translatesAutoresizingMaskIntoConstraints = false
+        priceValue.trailingAnchor.constraint(equalTo: priceView.trailingAnchor).isActive = true
+        priceView.heightAnchor.constraint(equalTo: priceValue.heightAnchor).isActive = true
         
-        priceValue.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24).isActive = true
-        priceValue.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
+        summaryVerticalStackView.addArrangedSubview(priceView)
         
-        contentView.addSubview(discountHeader)
+        // discount
+        discountView.translatesAutoresizingMaskIntoConstraints = false
+        discountView.addSubview(discountHeader)
         discountHeader.translatesAutoresizingMaskIntoConstraints = false
+        discountHeader.leadingAnchor.constraint(equalTo: discountView.leadingAnchor).isActive = true
         
-        discountHeader.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32).isActive = true
-        discountHeader.topAnchor.constraint(equalTo: priceHeader.bottomAnchor, constant: 10).isActive = true
-        
-        contentView.addSubview(discountValue)
+        discountView.addSubview(discountValue)
         discountValue.translatesAutoresizingMaskIntoConstraints = false
+        discountValue.trailingAnchor.constraint(equalTo: discountView.trailingAnchor).isActive = true
+        discountView.heightAnchor.constraint(equalTo: discountValue.heightAnchor).isActive = true
         
-        discountValue.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
-        discountValue.topAnchor.constraint(equalTo: priceValue.bottomAnchor, constant: 10).isActive = true
+        summaryVerticalStackView.addArrangedSubview(discountView)
         
-        contentView.addSubview(promocodesHeader)
+        // promocodes discount
+        promocodesDiscountView.translatesAutoresizingMaskIntoConstraints = false
+        promocodesDiscountView.addSubview(promocodesHeader)
         promocodesHeader.translatesAutoresizingMaskIntoConstraints = false
+        promocodesHeader.leadingAnchor.constraint(equalTo: promocodesDiscountView.leadingAnchor).isActive = true
         
-        promocodesHeader.topAnchor.constraint(equalTo: discountHeader.bottomAnchor, constant: 10).isActive = true
-        promocodesHeader.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32).isActive = true
-        
-        contentView.addSubview(promocodesValue)
+        promocodesDiscountView.addSubview(promocodesValue)
         promocodesValue.translatesAutoresizingMaskIntoConstraints = false
+        promocodesValue.trailingAnchor.constraint(equalTo: promocodesDiscountView.trailingAnchor).isActive = true
+        promocodesDiscountView.heightAnchor.constraint(equalTo: promocodesValue.heightAnchor).isActive = true
         
-        promocodesValue.topAnchor.constraint(equalTo: discountValue.bottomAnchor, constant: 10).isActive = true
-        promocodesValue.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
+        summaryVerticalStackView.addArrangedSubview(promocodesDiscountView)
         
-        contentView.addSubview(paymentDiscountHeader)
+        // payment discount
+        paymentDiscountView.translatesAutoresizingMaskIntoConstraints = false
+        paymentDiscountView.addSubview(paymentDiscountHeader)
         paymentDiscountHeader.translatesAutoresizingMaskIntoConstraints = false
+        paymentDiscountHeader.leadingAnchor.constraint(equalTo: paymentDiscountView.leadingAnchor).isActive = true
         
-        paymentDiscountHeader.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32).isActive = true
-        paymentDiscountHeader.topAnchor.constraint(equalTo: promocodesHeader.bottomAnchor, constant: 10).isActive = true
-        
-        contentView.addSubview(paymentDiscountValue)
+        paymentDiscountView.addSubview(paymentDiscountValue)
         paymentDiscountValue.translatesAutoresizingMaskIntoConstraints = false
+        paymentDiscountValue.trailingAnchor.constraint(equalTo: paymentDiscountView.trailingAnchor).isActive = true
+        paymentDiscountValue.topAnchor.constraint(equalTo: paymentDiscountView.topAnchor).isActive = true
+        paymentDiscountView.heightAnchor.constraint(equalTo: paymentDiscountValue.heightAnchor).isActive = true
         
-        paymentDiscountValue.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
-        paymentDiscountValue.topAnchor.constraint(equalTo: promocodesValue.bottomAnchor, constant: 10).isActive = true
+        summaryVerticalStackView.addArrangedSubview(paymentDiscountView)
         
         
+        // seporator line
+        contentView.addSubview(seporatorLine)
+        seporatorLine.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            seporatorLine.topAnchor.constraint(equalTo: summaryVerticalStackView.bottomAnchor, constant: 16),
+            seporatorLine.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32),
+            seporatorLine.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32),
+            seporatorLine.heightAnchor.constraint(equalToConstant: 1),
+        ])
         
-        contentView.addSubview(summHeader)
+        // Summ
+        
+        contentView.addSubview(summView)
+        summView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            summView.topAnchor.constraint(equalTo: seporatorLine.bottomAnchor, constant: 16),
+            summView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32),
+            summView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32)
+        ])
+        summView.addSubview(summHeader)
         summHeader.translatesAutoresizingMaskIntoConstraints = false
+        summHeader.leadingAnchor.constraint(equalTo: summView.leadingAnchor).isActive = true
         
         
-        summHeader.topAnchor.constraint(equalTo: paymentDiscountHeader.bottomAnchor, constant: 32).isActive = true
-        summHeader.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32).isActive = true
-        
-        contentView.addSubview(summValue)
+        summView.addSubview(summValue)
         summValue.translatesAutoresizingMaskIntoConstraints = false
         
-        summValue.topAnchor.constraint(equalTo: paymentDiscountValue.bottomAnchor, constant: 32).isActive = true
-        summValue.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
+        summValue.trailingAnchor.constraint(equalTo: summView.trailingAnchor).isActive = true
+        summView.heightAnchor.constraint(equalTo: summValue.heightAnchor).isActive = true
         
         contentView.addSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false
         
-        button.topAnchor.constraint(equalTo: summValue.bottomAnchor, constant: 16).isActive = true
-        button.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32).isActive = true
-        button.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32).isActive = true
+        NSLayoutConstraint.activate([
+            button.topAnchor.constraint(equalTo: summView.bottomAnchor, constant: 16),
+            button.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32),
+            button.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32),
+            button.heightAnchor.constraint(equalToConstant: 54)
+        ])
         
+        contentView.addSubview(oferteLabel)
+        oferteLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            oferteLabel.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 16),
+            oferteLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32),
+            oferteLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -32),
+            oferteLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -40)
+        ])
         
     }
     

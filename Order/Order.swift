@@ -53,7 +53,7 @@ let testOrder = Order(
     screenTitle: "Ваш заказ",
     promocodes: [
         Order.Promocode(
-            title: "Промокод на 5%",
+            title: "Промокод на 5% kljhkjhlkjhlkjhlkjhlkjhlkjhlkjhkljhlkjhlkjhlkjhkljh",
             percent: 5,
             endDate: Calendar.current.date(byAdding: .day, value: 10, to: Date()),
             info: "Скидка 5% на все товары",

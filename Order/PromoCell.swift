@@ -8,8 +8,15 @@
 import UIKit
 
 class PromoCell: UITableViewCell {
+    // What to do when buttonSwitch toggled
+    var onToggle: ((Bool, String) -> Void)?
+    
     var viewModel: TableViewModel.ViewModelType.Promo? {
         didSet {
+            if let viewModel = viewModel, let toggleClosure = viewModel.toggle {
+                onToggle = toggleClosure
+            }
+            
             updateUI()
         }
     }
@@ -19,7 +26,7 @@ class PromoCell: UITableViewCell {
     private lazy var leftCircle: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.frame = CGRect(x: -8, y: -8, width: 16, height: 16)
+        view.layer.cornerRadius = 8
         return view
     }()
     
@@ -27,7 +34,7 @@ class PromoCell: UITableViewCell {
     private lazy var rightCircle: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.frame = CGRect(x: -8, y: -8, width: 16, height: 16)
+        view.layer.cornerRadius = 8
         return view
     }()
     
@@ -69,6 +76,7 @@ class PromoCell: UITableViewCell {
         let button = UISwitch()
         button.isOn = false
         button.addTarget(self, action: #selector(toggle), for: .valueChanged)
+        button.onTintColor = UIColor(hexString: "#FF4611")
         return button
     }()
     
@@ -82,6 +90,12 @@ class PromoCell: UITableViewCell {
         label.layer.cornerRadius = 10
         label.layer.masksToBounds = true
         return label
+    }()
+    
+    private lazy var stackView: UIStackView = {
+        let view = UIStackView()
+        view.axis = .vertical
+        return view
     }()
 
     
@@ -105,28 +119,7 @@ class PromoCell: UITableViewCell {
         } else {
             cautionLabel.isHidden = true
         }
-
-        // Обновляем констрейнты в зависимости от наличия cautionLabel
-        updateConstraintsForCautionLabel(isCautionVisible: viewModel.caution != nil)
-    }
-
-    private func updateConstraintsForCautionLabel(isCautionVisible: Bool) {
-        cautionLabel.removeFromSuperview()
-        mainView.bottomAnchor.constraint(equalTo: background.bottomAnchor, constant: 12).isActive = false
-
-        if isCautionVisible {
-            contentView.addSubview(cautionLabel)
-            cautionLabel.translatesAutoresizingMaskIntoConstraints = false
-            cautionLabel.topAnchor.constraint(equalTo: mainView.bottomAnchor, constant: 8).isActive = true
-            cautionLabel.bottomAnchor.constraint(equalTo: background.bottomAnchor, constant: -12).isActive = true
-            cautionLabel.leftAnchor.constraint(equalTo: background.leftAnchor, constant: 20).isActive = true
-            
-            // Настраиваем mainView, чтобы он был выше cautionLabel
-            mainView.bottomAnchor.constraint(equalTo: cautionLabel.topAnchor, constant: -8).isActive = true
-        } else {
-            // Если cautionLabel скрыт, mainView должен быть привязан к нижней части background
-            mainView.bottomAnchor.constraint(equalTo: background.bottomAnchor, constant: -12).isActive = true
-        }
+        
     }
     
     required init?(coder: NSCoder) {
@@ -140,26 +133,18 @@ class PromoCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        leftCircle.layer.cornerRadius = leftCircle.frame.width / 2
-        rightCircle.layer.cornerRadius = rightCircle.frame.width / 2
     }
     
-    
-    private lazy var titleHorizontalStack: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        
-        return stack
-    }()
-    
     private lazy var infoButton: UIButton = {
-        let button = UIButton(type: .infoLight)
+        let button = UIButton()
+        button.setImage(UIImage(named: "infoButton"), for: .normal)
         return button
     }()
     
+    
     func setupUI() {
+        // background constraints
         contentView.addSubview(background)
-        // backGround (gray rectangle) constraints
         background.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             background.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
@@ -168,64 +153,85 @@ class PromoCell: UITableViewCell {
             background.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4)
         ])
         
+        // stackView constraints
+        contentView.addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: background.topAnchor, constant: 12),
+            stackView.leftAnchor.constraint(equalTo: background.leftAnchor, constant: 20),
+            stackView.rightAnchor.constraint(equalTo: background.rightAnchor, constant: -20),
+            stackView.bottomAnchor.constraint(equalTo: background.bottomAnchor, constant: -12)
+        ])
+        stackView.spacing = 4
+        
         // mainView constraints
-        contentView.addSubview(mainView)
+        stackView.addArrangedSubview(mainView)
         mainView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            mainView.topAnchor.constraint(equalTo: background.topAnchor, constant: 12),
-            mainView.leftAnchor.constraint(equalTo: background.leftAnchor, constant: 20),
-            mainView.trailingAnchor.constraint(equalTo: background.trailingAnchor, constant: -20)
+            mainView.leftAnchor.constraint(equalTo: stackView.leftAnchor),
+            mainView.rightAnchor.constraint(equalTo: stackView.rightAnchor)
         ])
         
-        contentView.addSubview(promoLabel)
-        contentView.addSubview(percentLabel)
-        contentView.addSubview(switchButton)
-        contentView.addSubview(infoButton)
-
-        promoLabel.translatesAutoresizingMaskIntoConstraints = false
-        percentLabel.translatesAutoresizingMaskIntoConstraints = false
-        switchButton.translatesAutoresizingMaskIntoConstraints = false
-        infoButton.translatesAutoresizingMaskIntoConstraints = false
+                
 
         // switchButton constraints
+        mainView.addSubview(switchButton)
+        switchButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             switchButton.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
             switchButton.centerYAnchor.constraint(equalTo: mainView.centerYAnchor)
         ])
         
-        NSLayoutConstraint.activate([
-            infoButton.centerYAnchor.constraint(equalTo: percentLabel.centerYAnchor),
-            infoButton.leadingAnchor.constraint(equalTo: percentLabel.trailingAnchor, constant: 4)
-        ])
-
         // percentLabel constraints
+        mainView.addSubview(percentLabel)
+        percentLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            percentLabel.leadingAnchor.constraint(equalTo: promoLabel.trailingAnchor, constant: 4),
             percentLabel.topAnchor.constraint(equalTo: mainView.topAnchor)
         ])
+        
+        // infoButton constraints
+        mainView.addSubview(infoButton)
+        infoButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            infoButton.centerYAnchor.constraint(equalTo: percentLabel.centerYAnchor),
+            infoButton.leadingAnchor.constraint(equalTo: percentLabel.trailingAnchor, constant: 4),
+            infoButton.trailingAnchor.constraint(lessThanOrEqualTo: switchButton.leadingAnchor, constant: -4)
+        ])
+
+        
 
         // promoLabel constraints
+        mainView.addSubview(promoLabel)
+        promoLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             promoLabel.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
-            promoLabel.trailingAnchor.constraint(lessThanOrEqualTo: switchButton.leadingAnchor, constant: -80),
+            promoLabel.trailingAnchor.constraint(equalTo: percentLabel.leadingAnchor, constant: -8),
             promoLabel.topAnchor.constraint(equalTo: mainView.topAnchor)
         ])
 
-        //promoLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        //percentLabel.setContentHuggingPriority(.required, for: .horizontal)
-        //.setContentHuggingPriority(.required, for: .horizontal)
+        // priorities
+        promoLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        percentLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        infoButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+        switchButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+        promoLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         
-        contentView.addSubview(dateLabel)
+        // dateLabel constraints
+        mainView.addSubview(dateLabel)
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.leftAnchor.constraint(equalTo: mainView.leftAnchor).isActive = true
         dateLabel.bottomAnchor.constraint(equalTo: mainView.bottomAnchor).isActive = true
         
-        
         promoLabel.bottomAnchor.constraint(equalTo: dateLabel.topAnchor).isActive = true
-        promoLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        
-        
         contentView.addSubview(cautionLabel)
+        
+        stackView.addArrangedSubview(cautionLabel)
+        cautionLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            cautionLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            cautionLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+            cautionLabel.bottomAnchor.constraint(equalTo: stackView.bottomAnchor)
+        ])
         
         contentView.addSubview(leftCircle)
         leftCircle.translatesAutoresizingMaskIntoConstraints = false
@@ -241,6 +247,4 @@ class PromoCell: UITableViewCell {
         rightCircle.widthAnchor.constraint(equalToConstant: 16).isActive = true
         rightCircle.centerYAnchor.constraint(equalTo: background.centerYAnchor).isActive = true
     }
-
-    
 }

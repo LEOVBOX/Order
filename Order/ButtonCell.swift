@@ -17,66 +17,55 @@ class ButtonCell: UITableViewCell {
     var bgColor: UIColor?
     
     lazy var button: UIButton = {
-        let button = UIButton(type: .custom)
-
-        button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-        button.addTarget(self, action: #selector(buttonReleased), for: [.touchUpInside, .touchUpOutside])
-        button.layer.cornerRadius = 12
-        return button
-    }()
-    
-    @objc func buttonPressed() {
-        UIView.animate(withDuration: 0.3) {
-            if let alphaValue = self.bgColor?.alpha() {
-                if (alphaValue >= 0.5) {
-                    self.button.backgroundColor = self.button.backgroundColor?.adjustAlpha(by: -0.5)
-                }
-                else {
-                    self.button.backgroundColor = self.button.backgroundColor?.adjustAlpha(by: 0.5)
-                }
-            }
+        let button = UIButton(type: .system)
+        button.addTarget(self, action: #selector(onTap), for: [.touchDown, .touchDragEnter])
+                button.addTarget(self, action: #selector(touchCancelled), for: [.touchUpInside, .touchCancel, .touchDragExit])
+                return button
+            }()
             
-        }
+    @objc private func onTap() {
+        UIView.animate(withDuration: 0.1, animations: {
+            self.button.alpha = 0.75
+        })
+    }
+
+    @objc private func touchCancelled() {
+        UIView.animate(withDuration: 0.1, animations: {
+            self.button.alpha = 1
+        })
     }
     
-    @objc func buttonReleased() {
-        UIView.animate(withDuration: 0.3) {
-            if let color = self.bgColor {
-                self.button.backgroundColor = color
-            }
-        }
-    }
     
-    lazy var image: UIImageView = {
-        let imageView = UIImageView()
-        return imageView
-    }()
-    
-    lazy var title: UILabel = {
-        let label = UILabel()
-        return label
-    }()
     
     private func updateUI() {
         guard let viewModel else {
             return
         }
+            
+        var config = UIButton.Configuration.filled()
         
-        if let promocodeImage = viewModel.image {
-            image.image = promocodeImage
+        if let imageName = viewModel.imageName {
+            config.image = UIImage(named: imageName)
         }
         
         if let buttonTitle = viewModel.title {
             if let titleHexColor = viewModel.titleHexColor {
-                self.title.textColor = UIColor(hexString: titleHexColor)
+                config.baseForegroundColor = UIColor(hexString: titleHexColor)
             }
-            title.text = buttonTitle
+            config.title = buttonTitle
         }
         
         if let hexColor = viewModel.backgroundHexColor {
             bgColor = UIColor(hexString: hexColor)
-            button.backgroundColor = bgColor
+            config.background.backgroundColor = bgColor
         }
+       
+        button.tintColor = .gray
+        config.imagePadding = 10
+        config.imagePlacement = .leading
+        config.background.cornerRadius = 12
+        button.configuration = config
+        button.isSymbolAnimationEnabled = true
     }
     
     private func setupUI() {
@@ -86,18 +75,7 @@ class ButtonCell: UITableViewCell {
         button.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
         button.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16).isActive = true
         button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8).isActive = true
-        
-        contentView.addSubview(image)
-        image.translatesAutoresizingMaskIntoConstraints = false
-        image.topAnchor.constraint(equalTo: button.topAnchor, constant: 15).isActive = true
-        image.leftAnchor.constraint(equalTo: button.leftAnchor, constant: 75).isActive = true
-        image.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -15).isActive = true
-        
-        contentView.addSubview(title)
-        title.translatesAutoresizingMaskIntoConstraints = false
-        title.topAnchor.constraint(equalTo: button.topAnchor, constant: 15).isActive = true
-        title.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -15).isActive = true
-        title.leftAnchor.constraint(equalTo: image.rightAnchor, constant: 10).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 54).isActive = true
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
