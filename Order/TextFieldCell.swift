@@ -8,9 +8,14 @@
 
 import UIKit
 
-class TextFieldCell: UITableViewCell {
+class TextFieldCell: UITableViewCell {    
     private func clearTextField() {
         
+    }
+    
+    private func showWarning() {
+        inputView?.layer.borderColor = UIColor(hexString: "#F42D2D").cgColor
+        warningLabel.isHidden = false
     }
     
     var viewModel: TableViewModel.ViewModelType.Text? {
@@ -84,6 +89,10 @@ class TextFieldCell: UITableViewCell {
             clearButton.setImage(UIImage(named: imageName), for: .normal)
         }
         
+        if viewModel.isWarning {
+            showWarning()
+        }
+        
         
     }
     
@@ -128,7 +137,6 @@ class TextFieldCell: UITableViewCell {
             
         ])
         
-        
         // textField constraints
         textInputView.addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -138,10 +146,6 @@ class TextFieldCell: UITableViewCell {
             textField.leadingAnchor.constraint(equalTo: textInputView.leadingAnchor, constant: 12),
             textField.trailingAnchor.constraint(equalTo: clearButton.leadingAnchor)
         ])
-        
-        
-        
-        
         
         verticalStackView.addArrangedSubview(warningLabel)
         warningLabel.translatesAutoresizingMaskIntoConstraints = false

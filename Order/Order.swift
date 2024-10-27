@@ -36,6 +36,8 @@ struct Order {
     var screenTitle: String
 
     var promocodes: [Promocode]
+    
+    var availableForActive: [Promocode]
 
     
 
@@ -71,6 +73,29 @@ let testOrder = Order(
             percent: 10,
             endDate: Calendar.current.date(byAdding: .day, value: 20, to: Date()),
             info: "Скидка 10% на определенные товары",
+            active: false
+        )
+    ],
+    availableForActive: [
+        Order.Promocode(
+            title: "SUPERPROMO",
+            percent: 50,
+            endDate: Calendar.current.date(byAdding: .day, value: 10, to: Date()),
+            info: "Скидка 50% на все товары",
+            active: true
+        ),
+        Order.Promocode(
+            title: "Промокод на 10%",
+            percent: 10,
+            endDate: Calendar.current.date(byAdding: .day, value: 20, to: Date()),
+            info: "На кефир",
+            active: false
+        ),
+        Order.Promocode(
+            title: "Промокод на 20%",
+            percent: 10,
+            endDate: Calendar.current.date(byAdding: .day, value: 20, to: Date()),
+            info: "Только на первый заказ",
             active: false
         )
     ],

@@ -62,6 +62,7 @@ struct TableViewModel {
         struct Text {
             var text: String
             var imageName: String?
+            var isWarning: Bool
         }
         
         case info(TitleInfo)
