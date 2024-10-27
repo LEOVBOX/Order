@@ -9,6 +9,11 @@ import Foundation
 
 class ViewModel {
     
+    lazy var price: Double = 0
+    lazy var promocodesDiscount: Double = 0
+    lazy var discountPercent: Int = 0
+    lazy var currentSumm: Double = 0
+    
     // Closure для обновления интерфейса в ViewController
     var dataUpdated: (() -> Void)?
     
@@ -38,42 +43,91 @@ class ViewModel {
         
         // Добавляем все промокоды из заказа
         for promocode in order.promocodes {
-            let promoViewModel = TableViewModel.ViewModelType.Promo(
+            var promoViewModel = TableViewModel.ViewModelType.Promo(
                 title: promocode.title,
-                percent: "\(promocode.percent)%",
+                percent: promocode.percent,
                 date: formattedDate(promocode.endDate),
                 caution: promocode.info,
                 isActive: promocode.active,
                 toggle: togglePromo(value:id:)
             )
             
-            if (toggledPromoCells.count == productsCount && promoViewModel.isActive) {
-                var untogledPromoCell = toggledPromoCells.removeLast()
-                untogledPromoCell.isActive = false
-            }
-            
-            if (promoViewModel.isActive) {
+            // Увеличиваем скидку доступным количеством активных промокодов
+            if (toggledPromoCells.count != productsCount) && (promoViewModel.isActive) {
+                discountPercent += promocode.percent
                 toggledPromoCells.append(promoViewModel)
+            }
+            else {
+                promoViewModel.isActive = false
             }
             
             cellViewModels.append(.init(type: .promo(promoViewModel)))
         }
         
         cellViewModels.append(.init(type: .button(.init(imageName: nil, title: "Скрыть промокоды", backgroundHexColor: "#FF46100", titleHexColor: "#FF4611"))))
-       
-        var summ: Double = 0
         
+        // Calculate summ without discount
         for product in order.products {
-            summ += product.price
+            price += product.price
         }
         
+        promocodesDiscount = price * (1 - Double(discountPercent) / 100)
         
-        let resultViewModel = TableViewModel.ViewModelType.Result(summ: summ, productsCount: productsCount, baseDiscount: order.baseDiscount, promocodesDiscount: 0, paymentDiscount: 0, price: summ)
+        currentSumm = price - promocodesDiscount
+        if let baseDiscount = order.baseDiscount {
+            currentSumm -= baseDiscount
+        }
+        
+        if let paymentDiscount = order.paymentDiscount {
+            currentSumm -= paymentDiscount
+        }
+        
+        let resultViewModel = TableViewModel.ViewModelType.Result(summ: currentSumm, productsCount: productsCount, baseDiscount: order.baseDiscount, promocodesDiscount: 0, paymentDiscount: 0, price: price)
         cellViewModels.append(.init(type: .result(resultViewModel)))
     }
     
     
-    func togglePromo(value: Bool, id: String) {
+    private func updateResultCell() {
+        // Находим индекс ячейки Result в массиве cellViewModels
+        guard let resultIndex = cellViewModels.firstIndex(where: { cellViewModel in
+            if case .result = cellViewModel.type {
+                return true
+            }
+            return false
+        }) else { return }
+        
+        promocodesDiscount = 0
+        
+        // Вычисляем скидку от активных промокодов
+        for promo in toggledPromoCells {
+            promocodesDiscount += price * (Double(promo.percent) / 100.0)
+        }
+        
+        currentSumm = price - promocodesDiscount
+        
+        // Находим текущую модель результата
+        if case var .result(resultModel) = cellViewModels[resultIndex].type {
+            // Пересчитываем итоговую цену с учетом базовой суммы и скидок
+            if let baseDiscount = resultModel.baseDiscount {
+                currentSumm -= baseDiscount
+            }
+            
+            if let paymentDiscount = resultModel.paymentDiscount {
+                currentSumm -= paymentDiscount
+            }
+            
+            resultModel.summ = currentSumm
+            resultModel.promocodesDiscount = promocodesDiscount
+            
+            // Обновляем ячейку Result с новыми данными
+            cellViewModels[resultIndex].type = .result(resultModel)
+            
+            // Вызываем замыкание для обновления интерфейса
+            dataUpdated?()
+        }
+    }
+    
+    private func togglePromo(value: Bool, id: String) {
         // Находим индекс нужного элемента в массиве
         var isActive = value
         guard let index = cellViewModels.firstIndex(where: { cellViewModel in
@@ -110,8 +164,7 @@ class ViewModel {
                 }
             }
             
-            // Обновляем интерфейс
-            dataUpdated?()
+            updateResultCell()
         default:
             break
         }

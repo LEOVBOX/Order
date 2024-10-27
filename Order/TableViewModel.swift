@@ -13,13 +13,13 @@ struct TableViewModel {
         struct Promo {
             let id: String = UUID().uuidString
             let title: String
-            let percent: String
+            let percent: Int
             let date: String
             let caution: String?
             var isActive: Bool
             let toggle: ((Bool, String) -> Void)?
             
-            init(title: String, percent: String, date: String, caution: String? = nil, isActive: Bool, toggle: (((Bool, String) -> Void))? = nil) {
+            init(title: String, percent: Int, date: String, caution: String? = nil, isActive: Bool, toggle: (((Bool, String) -> Void))? = nil) {
                 self.title = title
                 self.percent = percent
                 self.caution = caution
