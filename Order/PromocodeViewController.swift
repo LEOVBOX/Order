@@ -29,6 +29,13 @@ class PromocodeViewController: UIViewController {
         self.navigationItem.title = "Применить промокод"
         self.navigationController?.navigationBar.tintColor = UIColor(hexString: "#FF4611")
         self.navigationController?.navigationBar.backItem?.title = ""
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
+        tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
+        viewModel.createTable()
     }
     
 }

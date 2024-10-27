@@ -13,7 +13,7 @@ class PromocodeViewModel {
     lazy var cellViewModels: [TableViewModel] = []
     
     func createTable() {
-        cellViewModels.append(.init(type: .textField(.init(text: ""))))
+        cellViewModels.append(.init(type: .textField(.init(text: "", imageName: "clearButton"))))
         cellViewModels.append(.init(type: .button(.init(
             title: "Применить",
             backgroundHexColor: "#FF4611",
