@@ -8,6 +8,7 @@
 import Foundation
 
 struct TableViewModel {
+    // Models for table cells
     enum ViewModelType {
         struct Promo {
             let id: String = UUID().uuidString
@@ -15,7 +16,7 @@ struct TableViewModel {
             let percent: String
             let date: String
             let caution: String?
-            let isActive: Bool
+            var isActive: Bool
             let toggle: ((Bool, String) -> Void)?
             
             init(title: String, percent: String, date: String, caution: String? = nil, isActive: Bool, toggle: (((Bool, String) -> Void))? = nil) {

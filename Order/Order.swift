@@ -65,12 +65,19 @@ let testOrder = Order(
             endDate: Calendar.current.date(byAdding: .day, value: 20, to: Date()),
             info: "Скидка 10% на определенные товары",
             active: false
+        ),
+        Order.Promocode(
+            title: "Промокод на 20%",
+            percent: 10,
+            endDate: Calendar.current.date(byAdding: .day, value: 20, to: Date()),
+            info: "Скидка 10% на определенные товары",
+            active: false
         )
     ],
     products: [
         Order.Product(price: 100.0, title: "Товар 1"),
-        Order.Product(price: 150.0, title: "Товар 2"),
-        Order.Product(price: 200.0, title: "Товар 3")
+        Order.Product(price: 100.0, title: "Товар 2")
+        
     ],
     paymentDiscount: 50.0,
     baseDiscount: 30.0

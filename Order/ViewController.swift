@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    let viewModel = ViewModel()
+    private let viewModel = ViewModel()
     
     private lazy var label: UILabel = {
         let label = UILabel()
@@ -20,13 +20,24 @@ class ViewController: UIViewController {
         return label
     }()
 
-    func showOrder(order: Order) {
+    private func showOrder(order: Order) {
         // Очищаем текущие данные
         viewModel.cellViewModels.removeAll()
         
         label.text = order.screenTitle
 
         viewModel.createTable(order: order)
+    }
+    
+    private func showPromocodesCountAlert() {
+        let alertController = UIAlertController(title: title, message: "Для каждого продукта можно прменить только 1 промокод", preferredStyle: .alert)
+            
+            // Добавляем кнопку "OK"
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            
+            // Показываем предупреждение
+            present(alertController, animated: true, completion: nil)
     }
     
     private lazy var seporatorView: UIView = {
@@ -63,6 +74,8 @@ class ViewController: UIViewController {
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
+        viewModel.dataUpdated = tableView.reloadData
+        viewModel.showPromcodesCountAlert = self.showPromocodesCountAlert
         showOrder(order: testOrder)
     }
 }

@@ -16,7 +16,6 @@ class PromoCell: UITableViewCell {
             if let viewModel = viewModel, let toggleClosure = viewModel.toggle {
                 onToggle = toggleClosure
             }
-            
             updateUI()
         }
     }
@@ -100,8 +99,9 @@ class PromoCell: UITableViewCell {
 
     
     @objc func toggle() {
-        guard let viewModel else { return }
-        viewModel.toggle?(switchButton.isOn, viewModel.id)
+        if let id = viewModel?.id {
+            onToggle?(self.switchButton.isOn, id)
+        }
     }
     
     private func updateUI() {
