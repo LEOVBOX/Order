@@ -20,6 +20,8 @@ class ViewModel {
     // Closure для показа сообщения об ошибке в ViewController
     var showPromcodesCountAlert: (() -> Void)?
     
+    var showPromocodesViewController: (() -> Void)?
+    
     
     lazy var productsCount = 0
     
@@ -39,7 +41,13 @@ class ViewModel {
         // Добавляем информацию о промокодах
         cellViewModels.append(.init(type: .info(.init(title: "Промокоды", info: "На один товар можно применить только один промокод"))))
         
-        cellViewModels.append(.init(type: .button(.init(imageName: "Promocode", title: "Применить промокод", backgroundHexColor: "#FF46111A", titleHexColor: "#FF4611"))))
+        cellViewModels.append(.init(type: .button(.init(
+            imageName: "Promocode",
+            title: "Применить промокод",
+            backgroundHexColor: "#FF46111A",
+            titleHexColor: "#FF4611",
+            action: showPromocodesViewController
+        ))))
         
         // Добавляем все промокоды из заказа
         for promocode in order.promocodes {

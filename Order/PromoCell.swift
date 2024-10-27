@@ -138,6 +138,7 @@ class PromoCell: UITableViewCell {
     private lazy var infoButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "infoButton"), for: .normal)
+        
         return button
     }()
     

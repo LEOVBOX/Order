@@ -48,6 +48,15 @@ struct TableViewModel {
             let title: String?
             let backgroundHexColor: String?
             let titleHexColor: String?
+            let action: (() -> Void)?
+            
+            init (imageName: String? = nil, title: String? = nil, backgroundHexColor: String? = nil, titleHexColor: String? = nil, action: (() -> Void)? = nil) {
+                self.imageName = imageName
+                self.title = title
+                self.backgroundHexColor = backgroundHexColor
+                self.titleHexColor = titleHexColor
+                self.action = action
+            }
         }
         
         

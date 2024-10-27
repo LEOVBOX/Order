@@ -8,6 +8,8 @@
 import UIKit
 
 class ButtonCell: UITableViewCell {
+    var onTapAction: (() -> Void)?
+    
     var viewModel: TableViewModel.ViewModelType.Button? {
         didSet {
             updateUI()
@@ -19,14 +21,15 @@ class ButtonCell: UITableViewCell {
     lazy var button: UIButton = {
         let button = UIButton(type: .system)
         button.addTarget(self, action: #selector(onTap), for: [.touchDown, .touchDragEnter])
-                button.addTarget(self, action: #selector(touchCancelled), for: [.touchUpInside, .touchCancel, .touchDragExit])
-                return button
-            }()
+        button.addTarget(self, action: #selector(touchCancelled), for: [.touchUpInside, .touchCancel, .touchDragExit])
+        return button
+    }()
             
     @objc private func onTap() {
         UIView.animate(withDuration: 0.1, animations: {
             self.button.alpha = 0.75
         })
+        onTapAction?()
     }
 
     @objc private func touchCancelled() {
@@ -66,6 +69,8 @@ class ButtonCell: UITableViewCell {
         config.background.cornerRadius = 12
         button.configuration = config
         button.isSymbolAnimationEnabled = true
+        
+        onTapAction = viewModel.action
     }
     
     private func setupUI() {

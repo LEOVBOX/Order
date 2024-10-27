@@ -29,6 +29,12 @@ class ViewController: UIViewController {
         viewModel.createTable(order: order)
     }
     
+    private func showPromocodeViewController() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+            self?.navigationController?.pushViewController(PromocodeViewController(), animated: false)
+        }
+    }
+    
     private func showPromocodesCountAlert() {
         let alertController = UIAlertController(title: title, message: "Для каждого продукта можно прменить только 1 промокод", preferredStyle: .alert)
             
@@ -76,6 +82,7 @@ class ViewController: UIViewController {
         tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
         viewModel.dataUpdated = tableView.reloadData
         viewModel.showPromcodesCountAlert = self.showPromocodesCountAlert
+        viewModel.showPromocodesViewController = self.showPromocodeViewController
         showOrder(order: testOrder)
     }
 }
