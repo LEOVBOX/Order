@@ -70,6 +70,7 @@ class ViewController: UIViewController {
         viewModel.dataUpdated = tableView.reloadData
         viewModel.showPromcodesCountAlert = self.showPromocodesCountAlert
         viewModel.showPromocodesViewController = self.showPromocodeViewController
+        //self.navigationItem.title = testOrder.screenTitle
         showOrder(order: testOrder)
     }
 }
@@ -123,7 +124,16 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             cell.viewModel = button
             cell.selectionStyle = .none
             return cell
+        case .textField(let text):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TextFieldCell.self)) as? TextFieldCell else {
+                return UITableViewCell()
+            }
+            
+            cell.viewModel = text
+            cell.selectionStyle = .none
+            return cell
         }
+    
         
     }
     

@@ -59,11 +59,16 @@ struct TableViewModel {
             }
         }
         
+        struct Text {
+            var text: String
+            var imageName: String?
+        }
         
         case info(TitleInfo)
         case promo(Promo)
         case result(Result)
         case button(Button)
+        case textField(Text)
     }
 
     var type: ViewModelType
