@@ -79,7 +79,9 @@ class ViewModel {
             price += product.price
         }
         
-        promocodesDiscount = price * (1 - Double(discountPercent) / 100)
+        for promo in toggledPromoCells {
+            promocodesDiscount += price * (Double(promo.percent) / 100.0)
+        }
         
         currentSumm = price - promocodesDiscount
         if let baseDiscount = order.baseDiscount {
@@ -90,7 +92,7 @@ class ViewModel {
             currentSumm -= paymentDiscount
         }
         
-        let resultViewModel = TableViewModel.ViewModelType.Result(summ: currentSumm, productsCount: productsCount, baseDiscount: order.baseDiscount, promocodesDiscount: 0, paymentDiscount: 0, price: price)
+        let resultViewModel = TableViewModel.ViewModelType.Result(summ: currentSumm, productsCount: productsCount, baseDiscount: order.baseDiscount, promocodesDiscount: promocodesDiscount, paymentDiscount: 0, price: price)
         cellViewModels.append(.init(type: .result(resultViewModel)))
     }
     

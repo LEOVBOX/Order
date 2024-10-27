@@ -10,27 +10,19 @@ import UIKit
 class ViewController: UIViewController {
 
     private let viewModel = ViewModel()
-    
-    private lazy var label: UILabel = {
-        let label = UILabel()
-        label.text = "Оформление заказа"
-        label.textAlignment = .center
-        label.textColor = UIColor.black
-        label.numberOfLines = 0
-        return label
-    }()
+
 
     private func showOrder(order: Order) {
         // Очищаем текущие данные
         viewModel.cellViewModels.removeAll()
         
-        label.text = order.screenTitle
+        self.navigationItem.title = order.screenTitle
 
         viewModel.createTable(order: order)
     }
     
     private func showPromocodeViewController() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now()) { [weak self] in
             self?.navigationController?.pushViewController(PromocodeViewController(), animated: false)
         }
     }
@@ -66,17 +58,12 @@ class ViewController: UIViewController {
     }()
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        label.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
-        label.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
+        view.backgroundColor = .white
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: label.bottomAnchor).isActive = true
+        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true

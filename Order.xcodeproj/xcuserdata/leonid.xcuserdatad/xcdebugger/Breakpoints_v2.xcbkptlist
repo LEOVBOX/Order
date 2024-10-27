@@ -30,8 +30,8 @@
             filePath = "Order/ViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
             landmarkName = "togglePromo(value:id:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -62,8 +62,8 @@
             filePath = "Order/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
             landmarkName = "showPromocodesCountAlert()"
             landmarkType = "7">
          </BreakpointContent>
@@ -78,8 +78,8 @@
             filePath = "Order/ViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "170"
-            endingLineNumber = "170"
+            startingLineNumber = "172"
+            endingLineNumber = "172"
             landmarkName = "togglePromo(value:id:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -94,8 +94,8 @@
             filePath = "Order/ViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
+            startingLineNumber = "153"
+            endingLineNumber = "153"
             landmarkName = "togglePromo(value:id:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -110,8 +110,8 @@
             filePath = "Order/ViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
             landmarkName = "updateResultCell()"
             landmarkType = "7">
          </BreakpointContent>
@@ -120,19 +120,19 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "EBC55245-8C1F-4A1E-A635-F36BAF0565A7"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Order/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "33"
-            endingLineNumber = "33"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
             landmarkName = "showPromocodeViewController()"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "EBC55245-8C1F-4A1E-A635-F36BAF0565A7 - 4241fd1845deab1d"
+                  uuid = "EBC55245-8C1F-4A1E-A635-F36BAF0565A7 - 4241fd1845deaa15"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -142,11 +142,11 @@
                   urlString = "file:///Users/leonid/Order/Order/ViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "33"
-                  endingLineNumber = "33">
+                  startingLineNumber = "25"
+                  endingLineNumber = "25">
                </Location>
                <Location
-                  uuid = "EBC55245-8C1F-4A1E-A635-F36BAF0565A7 - dbcab855100e5c2d"
+                  uuid = "EBC55245-8C1F-4A1E-A635-F36BAF0565A7 - dbcab855100e5d25"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -156,8 +156,8 @@
                   urlString = "file:///Users/leonid/Order/Order/ViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "33"
-                  endingLineNumber = "33">
+                  startingLineNumber = "25"
+                  endingLineNumber = "25">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -175,6 +175,22 @@
             startingLineNumber = "32"
             endingLineNumber = "32"
             landmarkName = "onTap()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0FB520E9-E048-4273-83F7-488F9D60345C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Order/ViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
+            landmarkName = "createTable(order:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
