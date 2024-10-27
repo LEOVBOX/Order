@@ -23,9 +23,9 @@ class ViewModel {
     var showPromocodesViewController: (() -> Void)?
     
     
-    lazy var productsCount = 0
+    private lazy var productsCount = 0
     
-    lazy var toggledPromoCells: [TableViewModel.ViewModelType.Promo] = []
+    private lazy var toggledPromoCells: [TableViewModel.ViewModelType.Promo] = []
     lazy var cellViewModels: [TableViewModel] = []
     
     private func formattedDate(_ date: Date?) -> String {

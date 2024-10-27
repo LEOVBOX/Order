@@ -14,7 +14,7 @@ class ResultCell: UITableViewCell {
         }
     }
     
-    var bgColor: UIColor?
+    private var bgColor: UIColor?
     
     lazy var summaryVerticalStackView: UIStackView = {
         let stackView = UIStackView()

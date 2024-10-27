@@ -19,7 +19,7 @@ class TextFieldCell: UITableViewCell {
         }
     }
     
-    lazy var clearButton: UIButton = {
+    private lazy var clearButton: UIButton = {
         let button = UIButton()
         button.addTarget(self, action: #selector(onTap), for: [.touchDown, .touchDragEnter])
         button.addTarget(self, action: #selector(touchCancelled), for: [.touchUpInside, .touchCancel, .touchDragExit])
@@ -39,13 +39,13 @@ class TextFieldCell: UITableViewCell {
         })
     }
     
-    lazy var textField: UITextField = {
+    private lazy var textField: UITextField = {
         let textField = UITextField()
         textField.font = UIFont.systemFont(ofSize: 16)
         return textField
     }()
     
-    lazy var warningLabel: UILabel = {
+    private lazy var warningLabel: UILabel = {
         let label = UILabel()
         label.text = "К сожалению, данного промокода не существует"
         label.textColor = UIColor(hexString: "#F42D2D")
@@ -53,13 +53,13 @@ class TextFieldCell: UITableViewCell {
         return label
     }()
     
-    lazy var verticalStackView: UIStackView = {
+    private lazy var verticalStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         return stackView
     }()
     
-    lazy var textInputView: UIView = {
+    private lazy var textInputView: UIView = {
         let view = UIView()
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.black.cgColor
@@ -67,7 +67,7 @@ class TextFieldCell: UITableViewCell {
         return view
     }()
     
-    lazy var hintLabel: UILabel = {
+    private lazy var hintLabel: UILabel = {
         let hint = UILabel()
         hint.text = "Введите код"
         hint.textColor = UIColor(hexString: "#7A7A7A")

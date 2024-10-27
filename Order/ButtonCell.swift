@@ -16,7 +16,7 @@ class ButtonCell: UITableViewCell {
         }
     }
     
-    var bgColor: UIColor?
+    private var bgColor: UIColor?
     
     lazy var button: UIButton = {
         let button = UIButton(type: .system)
