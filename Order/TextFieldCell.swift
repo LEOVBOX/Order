@@ -13,6 +13,7 @@ class TextFieldCell: UITableViewCell {
     
     private func clearTextField() {
         textField.text = ""
+        textInputView.layer.borderColor = UIColor.black.cgColor
     }
     
     

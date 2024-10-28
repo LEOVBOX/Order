@@ -9,6 +9,10 @@ import UIKit
 
 
 class PromocodeViewController: UIViewController {
+    func showMainVC(order: Order) {
+        navigationController?.popViewController(animated: true)
+    }
+    
     private let viewModel = PromocodeViewModel()
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -36,6 +40,7 @@ class PromocodeViewController: UIViewController {
         tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
         viewModel.dataUpdated = tableView.reloadData
+        viewModel.showMainVC = showMainVC
         viewModel.createTable()
     }
     

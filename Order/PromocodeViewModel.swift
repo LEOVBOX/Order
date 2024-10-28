@@ -10,15 +10,16 @@ import Foundation
 class PromocodeViewModel {
     var dataUpdated: (() -> Void)?
     var showWarining: (() -> Void)?
+    var showMainVC: ((Order) -> Void)?
     
-    private func checkAvailablePromocode(promocodeTitle: String) -> Bool {
-        if order.availableForActive.contains(where: { promocode in
+    private func checkAvailablePromocode(promocodeTitle: String) -> Order.Promocode? {
+        if let promocode = order.availableForActive.first(where: { promocode in
             promocode.title == promocodeTitle
         }) {
-            return true
+            return promocode
         }
         else {
-            return false
+            return nil
         }
     }
     
@@ -53,13 +54,19 @@ class PromocodeViewModel {
         textFieldViewModel.text = promocodeTitle
         
         // wrong promocode
-        if !checkAvailablePromocode(promocodeTitle: textFieldViewModel.text) {
-            textFieldViewModel.isWarning = true
-            return false
+        if let promocode = checkAvailablePromocode(promocodeTitle: textFieldViewModel.text) {
+            textFieldViewModel.isWarning = false
+            order.promocodes.append(promocode)
+            order.availableForActive.removeAll(where: { promocode in
+                promocode.title == promocode.title
+            })
+            showMainVC?(order)
+            
+            return true
         }
         else {
-            textFieldViewModel.isWarning = false
-            return true
+            textFieldViewModel.isWarning = true
+            return false
         }
     }
     
