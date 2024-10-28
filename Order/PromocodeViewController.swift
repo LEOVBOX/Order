@@ -9,8 +9,11 @@ import UIKit
 
 
 class PromocodeViewController: UIViewController {
-    func showMainVC(order: Order) {
-        navigationController?.popViewController(animated: true)
+    
+    private func showMainVC(order: Order) {
+        DispatchQueue.main.asyncAfter(deadline: .now()) { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
     }
     
     private let viewModel = PromocodeViewModel()
@@ -43,7 +46,6 @@ class PromocodeViewController: UIViewController {
         viewModel.showMainVC = showMainVC
         viewModel.createTable()
     }
-    
 }
 
 extension PromocodeViewController: UITableViewDelegate, UITableViewDataSource {
