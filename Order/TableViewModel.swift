@@ -59,17 +59,20 @@ struct TableViewModel {
             }
         }
         
-        struct Text {
+        struct Input {
             var text: String
             var imageName: String?
             var isWarning: Bool
+            let hintText: String?
+            var buttonText: String?
+            let action: ((String) -> Bool)?
         }
         
         case info(TitleInfo)
         case promo(Promo)
         case result(Result)
         case button(Button)
-        case textField(Text)
+        case input(Input)
     }
 
     var type: ViewModelType

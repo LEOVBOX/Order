@@ -9,16 +9,15 @@
 import UIKit
 
 class TextFieldCell: UITableViewCell {    
+    var buttonTapAction: ((String) -> Bool)?
+    
     private func clearTextField() {
-        
+        textField.text = ""
     }
     
-    private func showWarning() {
-        inputView?.layer.borderColor = UIColor(hexString: "#F42D2D").cgColor
-        warningLabel.isHidden = false
-    }
     
-    var viewModel: TableViewModel.ViewModelType.Text? {
+    
+    var viewModel: TableViewModel.ViewModelType.Input? {
         didSet {
             updateUI()
         }
@@ -26,12 +25,12 @@ class TextFieldCell: UITableViewCell {
     
     private lazy var clearButton: UIButton = {
         let button = UIButton()
-        button.addTarget(self, action: #selector(onTap), for: [.touchDown, .touchDragEnter])
+        button.addTarget(self, action: #selector(onClearTap), for: [.touchDown, .touchDragEnter])
         button.addTarget(self, action: #selector(touchCancelled), for: [.touchUpInside, .touchCancel, .touchDragExit])
         return button
     }()
             
-    @objc private func onTap() {
+    @objc private func onClearTap() {
         UIView.animate(withDuration: 0.1, animations: {
             self.clearButton.alpha = 0.75
         })
@@ -43,6 +42,35 @@ class TextFieldCell: UITableViewCell {
             self.clearButton.alpha = 1
         })
     }
+    
+    lazy var button: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitleColor(.white, for: .normal)
+        button.setTitle("Применить", for: .normal)
+        button.backgroundColor = UIColor(hexString: "#FF4611")
+        button.titleLabel?.textColor = .white
+        button.layer.cornerRadius = 12
+        button.addTarget(self, action: #selector(onButtonTap), for: [.touchDown, .touchDragEnter])
+        return button
+    }()
+            
+    @objc private func onButtonTap() {
+        UIView.animate(withDuration: 0.1, animations: {
+            self.button.alpha = 0.75
+        },
+                       completion: { _ in
+                           UIView.animate(withDuration: 0.1) {
+                               self.button.alpha = 1
+                           }
+                       })
+        
+        if let applied = buttonTapAction?(textField.text ?? "") {
+            if !applied {
+                showWarning()
+            }
+        }
+    }
+    
     
     private lazy var textField: UITextField = {
         let textField = UITextField()
@@ -79,6 +107,11 @@ class TextFieldCell: UITableViewCell {
         return hint
     }()
     
+    private func showWarning() {
+        textInputView.layer.borderColor = UIColor(hexString: "#F42D2D").cgColor
+        warningLabel.isHidden = false
+    }
+    
     private func updateUI() {
         guard let viewModel else {
             return
@@ -92,11 +125,23 @@ class TextFieldCell: UITableViewCell {
         if viewModel.isWarning {
             showWarning()
         }
-        
+        buttonTapAction = viewModel.action
         
     }
     
+    
+    
     private func setupUI() {
+        // button constraints
+        contentView.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            button.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
+            button.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
+            button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -24),
+            button.heightAnchor.constraint(equalToConstant: 54)
+        ])
+        
         // vertical stack view constraints
         contentView.addSubview(verticalStackView)
         verticalStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -104,7 +149,7 @@ class TextFieldCell: UITableViewCell {
             verticalStackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
             verticalStackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
             verticalStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            verticalStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+            verticalStackView.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -8)
         ])
         
         // textInputView constraints
@@ -153,6 +198,8 @@ class TextFieldCell: UITableViewCell {
             warningLabel.leadingAnchor.constraint(equalTo: verticalStackView.leadingAnchor),
         ])
         warningLabel.isHidden = true
+        
+        
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

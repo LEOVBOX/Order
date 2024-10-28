@@ -9,6 +9,7 @@ import Foundation
 
 class PromocodeViewModel {
     var dataUpdated: (() -> Void)?
+    var showWarining: (() -> Void)?
     
     private func checkAvailablePromocode(promocodeTitle: String) -> Bool {
         if order.availableForActive.contains(where: { promocode in
@@ -24,7 +25,7 @@ class PromocodeViewModel {
     private func getTextFieldCellViewModel() -> TableViewModel? {
         return cellViewModels.first(where: { value in
             switch value.type {
-            case .textField:
+            case .input:
                 return true
             default:
                 return false
@@ -32,13 +33,13 @@ class PromocodeViewModel {
         })
     }
     
-    func applyPromocode() {
+    func applyPromocode(promocodeTitle: String) -> Bool{
         guard let textField = getTextFieldCellViewModel() else {
-            return
+            return false
         }
-        let textFieldViewModel: TableViewModel.ViewModelType.Text? = {
+        let textFieldViewModel: TableViewModel.ViewModelType.Input? = {
             switch textField.type {
-            case .textField(let textFieldViewModel):
+            case .input(let textFieldViewModel):
                 return textFieldViewModel
             default:
                 return nil
@@ -46,15 +47,19 @@ class PromocodeViewModel {
         }()
         
         guard var textFieldViewModel = textFieldViewModel else {
-            return
+            return false
         }
+        
+        textFieldViewModel.text = promocodeTitle
         
         // wrong promocode
         if !checkAvailablePromocode(promocodeTitle: textFieldViewModel.text) {
             textFieldViewModel.isWarning = true
+            return false
         }
         else {
             textFieldViewModel.isWarning = false
+            return true
         }
     }
     
@@ -64,13 +69,7 @@ class PromocodeViewModel {
     lazy var textFieldCell: TableViewModel? = nil
     
     func createTable() {
-        cellViewModels.append(.init(type: .textField(.init(text: "", imageName: "clearButton", isWarning: false))))
-        cellViewModels.append(.init(type: .button(.init(
-            title: "Применить",
-            backgroundHexColor: "#FF4611",
-            titleHexColor: "#FFFFFF",
-            action: applyPromocode
-        ))))
+        cellViewModels.append(.init(type: .input(.init(text: "", imageName: "clearButton", isWarning: false, hintText: "Введите код", action: applyPromocode))))
     }
     
 }

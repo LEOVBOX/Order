@@ -124,7 +124,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             cell.viewModel = button
             cell.selectionStyle = .none
             return cell
-        case .textField(let text):
+        case .input(let text):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TextFieldCell.self)) as? TextFieldCell else {
                 return UITableViewCell()
             }
