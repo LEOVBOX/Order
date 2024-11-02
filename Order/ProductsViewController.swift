@@ -1,31 +1,28 @@
 //
-//  PromocodeViewController.swift
+//  ProductsViewController.swift
 //  Order
 //
-//  Created by Леонид Шайхутдинов on 27.10.2024.
+//  Created by Леонид Шайхутдинов on 31.10.2024.
 //
 
 import UIKit
 
-
-class PromocodeViewController: UIViewController {
+class ProductsViewController: UIViewController {
+    private let viewModel = ProductsViewModel()
     
-    private func showMainVC(order: Order) {
-        DispatchQueue.main.asyncAfter(deadline: .now()) { [weak self] in
-            self?.navigationController?.popViewController(animated: true)
-        }
+    private func showProducts(products: [Product]) {
+        viewModel.cellViewModels.removeAll()
+        
+        self.navigationItem.title = "Напишите отзыв"
+        
+        viewModel.createTable(products: testProducts)
     }
     
-    private let viewModel = PromocodeViewModel()
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = UIColor(hexString: "#F6F6F6")
-        tableView.register(TitleCell.self, forCellReuseIdentifier: String(describing: TitleCell.self))
-        tableView.register(ButtonCell.self, forCellReuseIdentifier: String(describing: ButtonCell.self))
-        tableView.register(ResultCell.self, forCellReuseIdentifier: String(describing: ResultCell.self))
-        tableView.register(TextFieldCell.self, forCellReuseIdentifier: String(describing: TextFieldCell.self))
+        tableView.register(ProductView.self, forCellReuseIdentifier: String(describing: ProductView.self))
         tableView.separatorStyle = .none
         return tableView
     }()
@@ -33,9 +30,6 @@ class PromocodeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        self.navigationItem.title = "Применить промокод"
-        self.navigationController?.navigationBar.tintColor = UIColor(hexString: "#FF4611")
-        self.navigationController?.navigationBar.backItem?.title = ""
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
@@ -43,12 +37,18 @@ class PromocodeViewController: UIViewController {
         tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
         viewModel.dataUpdated = tableView.reloadData
-        viewModel.showMainVC = showMainVC
-        viewModel.createTable()
+        showProducts(products: testProducts)
     }
 }
 
-extension PromocodeViewController: UITableViewDelegate, UITableViewDataSource {
+extension ProductsViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+extension ProductsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.cellViewModels.count
     }
@@ -97,14 +97,23 @@ extension PromocodeViewController: UITableViewDelegate, UITableViewDataSource {
             cell.viewModel = text
             cell.selectionStyle = .none
             return cell
+        case .product(let product):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductView.self)) as? ProductView else {
+                return UITableViewCell()
+            }
+            
+            cell.viewModel = product
+            return cell
+            
         default:
             return UITableViewCell()
         }
-        
+    
         
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        tableView.deselectRow(at: indexPath, animated: true)
+        print("select on = \(indexPath)")
     }
 }

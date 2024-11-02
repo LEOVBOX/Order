@@ -68,11 +68,17 @@ struct TableViewModel {
             let action: ((String) -> Bool)?
         }
         
+        struct Product {
+            var title: String
+            var imageName: String?
+        }
+        
         case info(TitleInfo)
         case promo(Promo)
         case result(Result)
         case button(Button)
         case input(Input)
+        case product(Product)
     }
 
     var type: ViewModelType

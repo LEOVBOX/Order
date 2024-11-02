@@ -70,7 +70,6 @@ class ViewController: UIViewController {
         viewModel.dataUpdated = tableView.reloadData
         viewModel.showPromcodesCountAlert = self.showPromocodesCountAlert
         viewModel.showPromocodesViewController = self.showPromocodeViewController
-        //self.navigationItem.title = testOrder.screenTitle
         showOrder(order: testOrder)
     }
 }
@@ -132,6 +131,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             cell.viewModel = text
             cell.selectionStyle = .none
             return cell
+        default:
+            return UITableViewCell()
         }
     
         
