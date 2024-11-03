@@ -27,5 +27,8 @@ class ReviewViewModel {
         
         // comment
         cellViewModels.append(.init(type: .textField(.init(text: review.comment, hint: "Комментарий"))))
+        
+        // send button
+        cellViewModels.append(.init(type: .button(.init(title: "Отрпавить", backgroundHexColor: "#FF4611"))))
     }
 }

@@ -26,6 +26,7 @@ class ReviewViewController: UIViewController {
         tableView.register(ProductView.self, forCellReuseIdentifier: String(describing: ProductView.self))
         tableView.register(TextField.self, forCellReuseIdentifier: String(describing: TextField.self))
         tableView.register(RatingCellView.self, forCellReuseIdentifier: String(describing: RatingCellView.self))
+        tableView.register(ButtonCell.self, forCellReuseIdentifier: String(describing: ButtonCell.self))
         tableView.separatorStyle = .none
         return tableView
     }()

@@ -87,6 +87,10 @@ struct TableViewModel {
             let hint: String?
         }
         
+        struct Checkbox {
+            var isChecked: Bool = false
+        }
+        
         case info(TitleInfo)
         case promo(Promo)
         case result(Result)
@@ -95,6 +99,7 @@ struct TableViewModel {
         case product(Product)
         case rating(Rating)
         case textField(TextField)
+        case checkBox(Checkbox)
     }
 
     var type: ViewModelType
