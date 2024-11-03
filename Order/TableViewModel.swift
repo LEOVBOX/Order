@@ -71,6 +71,20 @@ struct TableViewModel {
         struct Product {
             var title: String
             var imageName: String?
+            var caption: String?
+            var isArrawEnabled: Bool = true
+        }
+        
+        struct Rating {
+            var rating: RatingValue?
+            init(rating: RatingValue? = nil) {
+                self.rating = rating
+            }
+        }
+        
+        struct TextField {
+            var text: String?
+            let hint: String?
         }
         
         case info(TitleInfo)
@@ -79,6 +93,8 @@ struct TableViewModel {
         case button(Button)
         case input(Input)
         case product(Product)
+        case rating(Rating)
+        case textField(TextField)
     }
 
     var type: ViewModelType

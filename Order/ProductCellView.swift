@@ -49,10 +49,20 @@ class ProductView: UITableViewCell {
         if let imageName = viewModel.imageName {
             image.image = UIImage(named: imageName)
         }
+
+        if !viewModel.isArrawEnabled {
+            chevronImageView.image = .none
+            if let caption = viewModel.caption {
+                captionView.text = caption
+            }
+        }
+    
     }
     
     private lazy var captionView: UILabel = {
         let label = UILabel()
+        label.textColor = UIColor(hexString: "#7A7A7A")
+        label.font = UIFont.systemFont(ofSize: 14)
         return label
     }()
     

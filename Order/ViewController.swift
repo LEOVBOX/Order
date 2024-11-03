@@ -124,7 +124,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             cell.selectionStyle = .none
             return cell
         case .input(let text):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TextFieldCell.self)) as? TextFieldCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: PromoTextFieldCell.self)) as? PromoTextFieldCell else {
                 return UITableViewCell()
             }
             
@@ -134,7 +134,6 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         default:
             return UITableViewCell()
         }
-    
         
     }
     

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TextFieldCell: UITableViewCell {    
+class PromoTextFieldCell: UITableViewCell {    
     var buttonTapAction: ((String) -> Bool)?
     
     private func clearTextField() {
