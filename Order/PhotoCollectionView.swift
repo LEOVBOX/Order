@@ -8,12 +8,38 @@ class PhotoCollectionView: UITableViewCell, UICollectionViewDelegate, UICollecti
     
     var dataUpdated: (() -> Void)?
     
-    var viewModel: TableViewModel.ViewModelType.PhotoCollection? {
-            didSet {
-                updateUI()
-            }
-        }
+    func deleteCell(cell: PhotoCollectionViewCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
         
+        // Удалить изображение из массива отображаемых изображений
+        let deletedImage = displayedImages.remove(at: indexPath.item)
+        allImages.removeAll(where: { value in
+            return value == deletedImage
+        })
+        allImages.append(deletedImage)
+        
+        // Обновить коллекцию с анимацией
+        collectionView.performBatchUpdates({
+            collectionView.deleteItems(at: [indexPath])
+        }, completion: { _ in
+            // Вызываем обновление высоты ячейки после удаления элемента
+            self.collectionView.reloadData()
+            self.dataUpdated?()
+            
+        })
+    }
+    
+    var viewModel: TableViewModel.ViewModelType.PhotoCollection? {
+        didSet {
+            updateUI()
+        }
+    }
+    
+    private lazy var addNewCellImage: UIImage = {
+        let image = UIImage(named: "cloud") ?? UIImage()
+        return image
+    }()
+    
     private var allImages: [UIImage] = []         // Полный массив изображений
     private var displayedImages: [UIImage] = []   // Массив отображаемых изображений
     private var isAddIconShown = true             // Флаг для контроля показа иконки добавления
@@ -26,7 +52,7 @@ class PhotoCollectionView: UITableViewCell, UICollectionViewDelegate, UICollecti
         let result = rows * itemHeight + (rows + 1) * spacing
         return result
     }
-        
+    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 8
@@ -90,10 +116,10 @@ extension PhotoCollectionView {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as! PhotoCollectionViewCell
         if indexPath.item < allImages.count {
-            if indexPath.item < displayedImages.count {
-                cell.configure(with: displayedImages[indexPath.item], isDeleteable: true)
+            if indexPath.item < displayedImages.count && displayedImages[indexPath.item] != addNewCellImage  {
+                cell.configure(with: displayedImages[indexPath.item], isDeleteable: true, deleteClousure: deleteCell(cell:))
             } else {
-                cell.configure(with: UIImage(systemName: "icloud.and.arrow.up")!) // Иконка добавления
+                cell.configure(with: addNewCellImage, isDeleteable: false) // Иконка добавления
             }
             return cell
         }
@@ -118,6 +144,6 @@ extension PhotoCollectionView {
         let itemWidth = (collectionView.bounds.width - totalPadding) / Constants.number
         return CGSize(width: itemWidth, height: itemWidth)
     }
-
+    
 }
 

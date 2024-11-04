@@ -7,6 +7,8 @@
 import UIKit
 
 class PhotoCollectionViewCell: UICollectionViewCell {
+    var deleteCell: ((PhotoCollectionViewCell) -> Void)?
+    
     static let identifier = "PhotoCollectionViewCell"
     
     private let imageView: UIImageView = {
@@ -22,9 +24,16 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         button.setTitle("✕", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .black.withAlphaComponent(0.5)
+        button.addTarget(self, action: #selector(deleteButtonAction), for: .touchUpInside)
         button.layer.cornerRadius = 10
         return button
     }()
+    
+    @objc private func deleteButtonAction() {
+        deleteCell?(self)
+    }
+    
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -46,7 +55,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with image: UIImage, isDeleteable: Bool = false) {
+    func configure(with image: UIImage, isDeleteable: Bool = false, deleteClousure: ((PhotoCollectionViewCell) -> Void)? = nil) {
         imageView.image = image
         if isDeleteable {
             contentView.addSubview(deleteButton)
@@ -58,6 +67,13 @@ class PhotoCollectionViewCell: UICollectionViewCell {
                 deleteButton.widthAnchor.constraint(equalToConstant: 20),
                 deleteButton.heightAnchor.constraint(equalToConstant: 20),
             ])
+            
+            if let deleteClousure = deleteClousure {
+                self.deleteCell = deleteClousure
+            }
+        }
+        else {
+            deleteButton.removeFromSuperview()
         }
     }
 }
