@@ -92,6 +92,10 @@ struct TableViewModel {
             var isChecked: Bool = false
         }
         
+        struct PhotoCollection {
+            var imageNames: [String]
+        }
+        
         case info(TitleInfo)
         case promo(Promo)
         case result(Result)
@@ -101,6 +105,7 @@ struct TableViewModel {
         case rating(Rating)
         case textField(TextField)
         case checkBox(Checkbox)
+        case photoCollection(PhotoCollection)
     }
 
     var type: ViewModelType

@@ -27,7 +27,7 @@ class CheckboxCellView: UITableViewCell {
         button.layer.borderColor = UIColor(hexString: "#7A7A7A").cgColor
         button.layer.borderWidth = 2
         button.addTarget(self, action: #selector(checked), for: .touchUpInside)
-        button.setImage(UIImage(named: "true"), for: .selected)
+        button.setImage(UIImage(named: "true"), for: [.selected, .highlighted])
         return button
     }()
     

@@ -19,6 +19,8 @@ class ReviewViewModel {
         // rating
         cellViewModels.append(.init(type: .rating(.init(rating: review.rating))))
         
+        cellViewModels.append(.init(type: .photoCollection(.init(imageNames: ["hand1", "hand2", "hand3"]))))
+        
         // advantages
         cellViewModels.append(.init(type: .textField(.init(text: review.advantages, hint: "Достоинства"))))
         
