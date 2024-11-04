@@ -88,6 +88,7 @@ struct TableViewModel {
         }
         
         struct Checkbox {
+            var label: String?
             var isChecked: Bool = false
         }
         

@@ -19,6 +19,7 @@ class TextField: UITableViewCell {
         return textField
     }()
     
+    
     private lazy var background: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(hexString: "#F6F6F6")

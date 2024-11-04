@@ -27,6 +27,7 @@ class ReviewViewController: UIViewController {
         tableView.register(TextField.self, forCellReuseIdentifier: String(describing: TextField.self))
         tableView.register(RatingCellView.self, forCellReuseIdentifier: String(describing: RatingCellView.self))
         tableView.register(ButtonCell.self, forCellReuseIdentifier: String(describing: ButtonCell.self))
+        tableView.register(CheckboxCellView.self, forCellReuseIdentifier: String(describing: CheckboxCellView.self))
         tableView.separatorStyle = .none
         return tableView
     }()
@@ -137,6 +138,15 @@ extension ReviewViewController: UITableViewDelegate, UITableViewDataSource {
             }
             
             cell.viewModel = rating
+            cell.selectionStyle = .none
+            return cell
+            
+        case .checkBox(let checkbox):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: CheckboxCellView.self)) as? CheckboxCellView else {
+                return UITableViewCell()
+            }
+            
+            cell.viewModel = checkbox
             cell.selectionStyle = .none
             return cell
         default:

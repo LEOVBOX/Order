@@ -28,6 +28,9 @@ class ReviewViewModel {
         // comment
         cellViewModels.append(.init(type: .textField(.init(text: review.comment, hint: "Комментарий"))))
         
+        // checkbox
+        cellViewModels.append(.init(type: .checkBox(.init(label: "Оставить анонимно", isChecked: false))))
+        
         // send button
         cellViewModels.append(.init(type: .button(.init(title: "Отрпавить", backgroundHexColor: "#FF4611"))))
     }

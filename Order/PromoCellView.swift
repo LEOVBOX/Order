@@ -174,7 +174,6 @@ class PromoCell: UITableViewCell {
         ])
         
                 
-
         // switchButton constraints
         mainView.addSubview(switchButton)
         switchButton.translatesAutoresizingMaskIntoConstraints = false
