@@ -156,7 +156,10 @@ extension ReviewViewController: UITableViewDelegate, UITableViewDataSource {
             }
             
             cell.viewModel = photoCollection
-            
+            cell.dataUpdated = { [weak self] in
+                self?.tableView.beginUpdates()
+                self?.tableView.endUpdates()
+            }
             cell.selectionStyle = .none
             return cell
             
@@ -172,8 +175,12 @@ extension ReviewViewController: UITableViewDelegate, UITableViewDataSource {
        switch viewModel.type {
        case .photoCollection(let photoCollection):
            // Создаем экземпляр ячейки и вычисляем высоту
-           let cell = PhotoCollectionView(style: .default, reuseIdentifier: String(describing: PhotoCollectionView.self))
-           cell.viewModel = photoCollection
+           guard let cell = tableView.cellForRow(at: indexPath) as? PhotoCollectionView else {
+               let cell = PhotoCollectionView(style: .default, reuseIdentifier: String(describing: PhotoCollectionView.self))
+               cell.viewModel = photoCollection
+               return cell.requiredHeight()
+           }
+           
            return cell.requiredHeight()
            
        default:

@@ -1,6 +1,12 @@
 import UIKit
 
-class PhotoCollectionView: UITableViewCell {
+class PhotoCollectionView: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    enum Constants {
+        static let padding: CGFloat = 10
+        static let number: CGFloat = 4
+    }
+    
+    var dataUpdated: (() -> Void)?
     
     var viewModel: TableViewModel.ViewModelType.PhotoCollection? {
             didSet {
@@ -8,59 +14,60 @@ class PhotoCollectionView: UITableViewCell {
             }
         }
         
-        private var allImages: [UIImage] = []         // Полный массив изображений
-        private var displayedImages: [UIImage] = []   // Массив отображаемых изображений
-        private var isAddIconShown = true             // Флаг для контроля показа иконки добавления
+    private var allImages: [UIImage] = []         // Полный массив изображений
+    private var displayedImages: [UIImage] = []   // Массив отображаемых изображений
+    private var isAddIconShown = true             // Флаг для контроля показа иконки добавления
+    
+    func requiredHeight() -> CGFloat {
+        let numberOfItemsPerRow: CGFloat = 4
+        let spacing: CGFloat = 8
+        let itemHeight = (UIScreen.main.bounds.width - (numberOfItemsPerRow + 1) * spacing) / numberOfItemsPerRow
+        let rows = ceil(CGFloat(displayedImages.count + 1) / numberOfItemsPerRow) // +1 для кнопки добавления
+        let result = rows * itemHeight + (rows + 1) * spacing
+        return result
+    }
         
-        func requiredHeight() -> CGFloat {
-            let numberOfItemsPerRow: CGFloat = 4
-            let spacing: CGFloat = 8
-            let itemHeight = (UIScreen.main.bounds.width - (numberOfItemsPerRow + 1) * spacing) / numberOfItemsPerRow
-            let rows = ceil(CGFloat(displayedImages.count + 1) / numberOfItemsPerRow) // +1 для кнопки добавления
-            return rows * itemHeight + (rows + 1) * spacing
-        }
-            
-        private lazy var collectionView: UICollectionView = {
-            let layout = UICollectionViewFlowLayout()
-            layout.minimumInteritemSpacing = 8
-            layout.minimumLineSpacing = 8
-            layout.scrollDirection = .vertical
-            
-            let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-            collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
-            collectionView.delegate = self
-            collectionView.dataSource = self
-            collectionView.isScrollEnabled = false // Отключаем прокрутку
-            return collectionView
-        }()
+    private lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumInteritemSpacing = 8
+        layout.minimumLineSpacing = 8
+        layout.scrollDirection = .vertical
         
-        override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-            super.init(style: style, reuseIdentifier: reuseIdentifier)
-            setupUI()
-        }
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.isScrollEnabled = false // Отключаем прокрутку
+        return collectionView
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // Метод для передачи всех изображений в ячейку
+    func configure(with images: [UIImage]) {
+        self.allImages = images
+        displayedImages = [] // Начинаем с пустого массива отображаемых изображений
+        collectionView.reloadData()
+    }
+    
+    func setupUI() {
+        contentView.addSubview(collectionView)
         
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-        
-        // Метод для передачи всех изображений в ячейку
-        func configure(with images: [UIImage]) {
-            self.allImages = images
-            displayedImages = [] // Начинаем с пустого массива отображаемых изображений
-            collectionView.reloadData()
-        }
-        
-        func setupUI() {
-            contentView.addSubview(collectionView)
-            
-            collectionView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                collectionView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-                collectionView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
-                collectionView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
-                collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
-            ])
-        }
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            collectionView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
+            collectionView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
+            collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+        ])
+    }
     
     
     func updateUI() {
@@ -70,10 +77,12 @@ class PhotoCollectionView: UITableViewCell {
                 self.allImages.append(image)
             }
         }
+        
+        collectionView.reloadData()
     }
 }
 
-extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSource {
+extension PhotoCollectionView {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return displayedImages.count + (isAddIconShown ? 1 : 0)
     }
@@ -98,15 +107,14 @@ extension PhotoCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
         guard displayedImages.count < allImages.count else { return }
         displayedImages.append(allImages[displayedImages.count]) // Добавляем следующее изображение
         collectionView.reloadData()
+        dataUpdated?()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let numberOfItemsPerRow: CGFloat = 4
-        let spacing: CGFloat = 8
-        let totalSpacing = (2 * spacing) + ((numberOfItemsPerRow - 1) * spacing)
-        
-        let width = (collectionView.bounds.width - totalSpacing) / numberOfItemsPerRow
-        return CGSize(width: width, height: width)
+        let totalPadding = Constants.padding * (Constants.number + 1)
+        let itemWidth = (collectionView.bounds.width - totalPadding) / Constants.number
+        return CGSize(width: itemWidth, height: itemWidth)
     }
+
 }
 
