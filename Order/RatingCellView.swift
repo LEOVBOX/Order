@@ -35,6 +35,7 @@ class RatingCellView: UITableViewCell {
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
+        stackView.spacing = 4
         return stackView
     }()
     
