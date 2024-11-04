@@ -162,8 +162,22 @@ extension ReviewViewController: UITableViewDelegate, UITableViewDataSource {
         default:
             return UITableViewCell()
         }
-    
-        
     }
+    
+    // Динамическая высота для ячейки PhotoCollectionView
+   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+       let viewModel = self.viewModel.cellViewModels[indexPath.row]
+       
+       switch viewModel.type {
+       case .photoCollection(let photoCollection):
+           // Создаем экземпляр ячейки и вычисляем высоту
+           let cell = PhotoCollectionView(style: .default, reuseIdentifier: String(describing: PhotoCollectionView.self))
+           cell.viewModel = photoCollection
+           return cell.requiredHeight()
+           
+       default:
+           return UITableView.automaticDimension
+       }
+   }
     
 }

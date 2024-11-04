@@ -18,6 +18,15 @@ class PhotoCollectionView: UITableViewCell {
     private var images: [UIImage] = [] // Массив изображений для коллекции
     
     
+    
+    func requiredHeight() -> CGFloat {
+        let numberOfItemsPerRow: CGFloat = 4
+        let spacing: CGFloat = 8
+        let itemHeight = (UIScreen.main.bounds.width - (numberOfItemsPerRow + 1) * spacing) / numberOfItemsPerRow
+        let rows = ceil(CGFloat(images.count + 1) / numberOfItemsPerRow) // +1 для кнопки добавления
+        return rows * itemHeight + (rows + 1) * spacing
+    }
+    
     // Создаем collectionView с FlowLayout
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
