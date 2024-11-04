@@ -10,6 +10,15 @@ import UIKit
 class ProductsViewController: UIViewController {
     private let viewModel = ProductsViewModel()
     
+    private var products: [Product] = testProducts
+    
+    private func showReviewController(product: Product) {
+        var review = Review(product: product)
+        DispatchQueue.main.asyncAfter(deadline: .now()) { [weak self] in
+            self?.navigationController?.pushViewController(ReviewViewController(review: review), animated: false)
+        }
+    }
+    
     private func showProducts(products: [Product]) {
         viewModel.cellViewModels.removeAll()
         
@@ -114,6 +123,6 @@ extension ProductsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        print("select on = \(indexPath)")
+        showReviewController(product: products[indexPath.row])
     }
 }
