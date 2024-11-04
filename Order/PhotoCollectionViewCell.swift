@@ -74,6 +74,8 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         }
         else {
             deleteButton.removeFromSuperview()
+            imageView.contentMode = .center
+            imageView.backgroundColor = UIColor(hexString: "#F6F6F6")
         }
     }
 }

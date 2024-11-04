@@ -105,7 +105,7 @@ class RatingCellView: UITableViewCell {
     }
     
     enum RatingLabelViewConstraints {
-        case leftPadding
+        case leftPadding 
         case topPadding
         case bottomPadding
         
