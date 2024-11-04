@@ -14,6 +14,11 @@ class CheckboxCellView: UITableViewCell {
         }
     }
     
+    private lazy var trueCheckImage: UIImage = {
+        let image = UIImage(named: "true") ?? UIImage()
+        return image
+    }()
+    
     private lazy var mainView: UIView = {
         let view = UIView()
         return view
@@ -27,7 +32,6 @@ class CheckboxCellView: UITableViewCell {
         button.layer.borderColor = UIColor(hexString: "#7A7A7A").cgColor
         button.layer.borderWidth = 2
         button.addTarget(self, action: #selector(checked), for: .touchUpInside)
-        button.setImage(UIImage(named: "true"), for: [.selected, .highlighted])
         return button
     }()
     
@@ -42,9 +46,11 @@ class CheckboxCellView: UITableViewCell {
         if (isChecked) {
             self.checkBoxView.layer.borderColor = .none
             self.checkBoxView.backgroundColor = UIColor(hexString: "#FF4611")
+            self.checkBoxView.setImage(trueCheckImage, for: .normal)
         }
         else {
             self.checkBoxView.layer.borderColor = UIColor(hexString: "#7A7A7A").cgColor
+            self.checkBoxView.setImage(.none, for: .normal)
             self.checkBoxView.backgroundColor = .none
         }
         
