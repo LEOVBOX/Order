@@ -43,7 +43,7 @@ class ReviewViewController: UIViewController {
         tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
         viewModel.dataUpdated = tableView.reloadData
-        showReview(review: testReview)
+        showReview(review: review)
     }
     
     init(review: Review) {
