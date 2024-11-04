@@ -29,10 +29,9 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(imageView)
-        contentView.addSubview(deleteButton)
+        
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        deleteButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -40,10 +39,6 @@ class PhotoCollectionViewCell: UICollectionViewCell {
             imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             
-            deleteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
-            deleteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
-            deleteButton.widthAnchor.constraint(equalToConstant: 20),
-            deleteButton.heightAnchor.constraint(equalToConstant: 20),
         ])
     }
     
@@ -51,7 +46,18 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with image: UIImage) {
+    func configure(with image: UIImage, isDeleteable: Bool = false) {
         imageView.image = image
+        if isDeleteable {
+            contentView.addSubview(deleteButton)
+            deleteButton.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                deleteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+                deleteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
+                deleteButton.widthAnchor.constraint(equalToConstant: 20),
+                deleteButton.heightAnchor.constraint(equalToConstant: 20),
+            ])
+        }
     }
 }

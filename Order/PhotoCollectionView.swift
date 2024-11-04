@@ -89,10 +89,13 @@ extension PhotoCollectionView {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as! PhotoCollectionViewCell
-        if indexPath.item < displayedImages.count {
-            cell.configure(with: displayedImages[indexPath.item])
-        } else {
-            cell.configure(with: UIImage(systemName: "icloud.and.arrow.up")!) // Иконка добавления
+        if indexPath.item < allImages.count {
+            if indexPath.item < displayedImages.count {
+                cell.configure(with: displayedImages[indexPath.item], isDeleteable: true)
+            } else {
+                cell.configure(with: UIImage(systemName: "icloud.and.arrow.up")!) // Иконка добавления
+            }
+            return cell
         }
         return cell
     }
