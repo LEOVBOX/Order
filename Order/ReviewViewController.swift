@@ -156,6 +156,7 @@ extension ReviewViewController: UITableViewDelegate, UITableViewDataSource {
             }
             
             cell.viewModel = photoCollection
+            
             cell.selectionStyle = .none
             return cell
             
@@ -179,5 +180,7 @@ extension ReviewViewController: UITableViewDelegate, UITableViewDataSource {
            return UITableView.automaticDimension
        }
    }
+    
+    
     
 }
