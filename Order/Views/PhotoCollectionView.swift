@@ -20,15 +20,16 @@ class PhotoCollectionView: UITableViewCell, UICollectionViewDelegate, UICollecti
         })
         allImages.append(deletedImage)
         
-        //if displayedImages.count < allImages.count {
-            //isAddIconShown = true
-        //}
+        
         
         // Обновить коллекцию с анимацией
         collectionView.performBatchUpdates({
             collectionView.deleteItems(at: [indexPath])
         }, completion: { _ in
             // Вызываем обновление высоты ячейки после удаления элемента
+            if self.displayedImages.count < self.allImages.count {
+                self.isAddIconShown = true
+            }
             self.collectionView.reloadData()
             self.dataUpdated?()
             
@@ -128,6 +129,8 @@ extension PhotoCollectionView {
                 cell.configure(with: addNewCellImage, isDeleteable: false) // Иконка добавления
             }
             return cell
+        } else {
+            cell.configure(with: addNewCellImage, isDeleteable: false) // Иконка добавления
         }
         return cell
     }
@@ -142,12 +145,9 @@ extension PhotoCollectionView {
         guard displayedImages.count < allImages.count else { return }
         displayedImages.append(allImages[displayedImages.count]) // Добавляем следующее изображение
         // Удаляем картинку добавления из массива отображаемых картинок
-//        if displayedImages.count == allImages.count {
-//            isAddIconShown = false
-//            displayedImages.removeAll(where: { image in
-//                return image == addNewCellImage
-//            })
-//        }
+        if displayedImages.count == allImages.count {
+            isAddIconShown = false
+        }
 
         collectionView.reloadData()
         dataUpdated?()
