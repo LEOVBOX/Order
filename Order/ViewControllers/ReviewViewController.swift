@@ -68,6 +68,10 @@ extension ReviewViewController: UITextFieldDelegate {
 }
 
 extension ReviewViewController: UITableViewDelegate, UITableViewDataSource {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        view.endEditing(true)
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.cellViewModels.count
     }
