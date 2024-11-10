@@ -526,40 +526,10 @@
             filePath = "Order/ViewControllers/ReviewViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "65"
-            endingLineNumber = "65"
+            startingLineNumber = "89"
+            endingLineNumber = "89"
             landmarkName = "textFieldShouldReturn(_:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "5D888C98-A901-41A6-A879-E7D87344C5E0 - c1614c00b359e3e9"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Order.ReviewViewController.textFieldShouldReturn(__C.UITextField) -&gt; Swift.Bool"
-                  moduleName = "Order"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/leonid/Order/Order/ViewControllers/ReviewViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "65"
-                  endingLineNumber = "65">
-               </Location>
-               <Location
-                  uuid = "5D888C98-A901-41A6-A879-E7D87344C5E0 - 3a71e687225e5725"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (__C.UITableViewCell) -&gt; Swift.Bool in Order.ReviewViewController.textFieldShouldReturn(__C.UITextField) -&gt; Swift.Bool"
-                  moduleName = "Order"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/leonid/Order/Order/ViewControllers/ReviewViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "66"
-                  endingLineNumber = "66">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

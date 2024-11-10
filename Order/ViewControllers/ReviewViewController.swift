@@ -41,8 +41,32 @@ class ReviewViewController: UIViewController {
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         viewModel.dataUpdated = tableView.reloadData
         showReview(review: review)
+    }
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        let keyboardHeight = keyboardFrame.height
+        tableView.contentInset.bottom = keyboardHeight
+        tableView.verticalScrollIndicatorInsets.bottom = keyboardHeight
+    }
+        
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        tableView.contentInset.bottom = 0
+        tableView.verticalScrollIndicatorInsets.bottom = 0
+    }
+        
+        
+        
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if let cell = textField.superview?.superview as? UITableViewCell, let indexPath = tableView.indexPath(for: cell) {
+            // Прокрутка к ячейке с текстовым полем, чтобы она была видима
+            tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+        }
     }
     
     init(review: Review) {
