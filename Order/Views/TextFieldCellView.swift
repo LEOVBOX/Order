@@ -7,14 +7,14 @@
 
 import UIKit
 
-class TextField: UITableViewCell {
+class TextFieldTableViewCell: UITableViewCell {
     var viewModel: TableViewModel.ViewModelType.TextField? {
         didSet {
             updateUI()
         }
     }
     
-    private lazy var textField: UITextField = {
+    public lazy var textField: UITextField = {
         let textField = UITextField()
         return textField
     }()

@@ -22,7 +22,7 @@ class ReviewViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(ProductView.self, forCellReuseIdentifier: String(describing: ProductView.self))
-        tableView.register(TextField.self, forCellReuseIdentifier: String(describing: TextField.self))
+        tableView.register(TextFieldTableViewCell.self, forCellReuseIdentifier: String(describing: TextFieldTableViewCell.self))
         tableView.register(RatingCellView.self, forCellReuseIdentifier: String(describing: RatingCellView.self))
         tableView.register(ButtonCell.self, forCellReuseIdentifier: String(describing: ButtonCell.self))
         tableView.register(CheckboxCellView.self, forCellReuseIdentifier: String(describing: CheckboxCellView.self))
@@ -62,10 +62,32 @@ class ReviewViewController: UIViewController {
 
 extension ReviewViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+        if let cell = tableView.visibleCells.first(where: { cell in
+            if let textFieldCell = cell as? TextFieldTableViewCell, textFieldCell.textField == textField {
+                return true
+            }
+            return false
+        })
+            as? TextFieldTableViewCell, let index = cell.viewModel?.index {
+            var nextTextFieldCell = tableView.visibleCells.first(where: { cell in
+                if let textFieldCell = cell as? TextFieldTableViewCell {
+                    if textFieldCell.viewModel?.index == index + 1 {
+                        return true
+                    }
+                }
+                return false
+            }) as? TextFieldTableViewCell
+            
+            nextTextFieldCell?.textField.becomeFirstResponder()
+        }
+        
+        else {
+            textField.resignFirstResponder()
+        }
         return true
     }
 }
+
 
 extension ReviewViewController: UITableViewDelegate, UITableViewDataSource {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -129,11 +151,13 @@ extension ReviewViewController: UITableViewDelegate, UITableViewDataSource {
             cell.selectionStyle = .none
             return cell
         case .textField(let textField):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TextField.self)) as? TextField else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TextFieldTableViewCell.self)) as? TextFieldTableViewCell else {
                 return UITableViewCell()
             }
             
+            cell.textField.delegate = self
             cell.viewModel = textField
+            cell.viewModel?.index = indexPath.row
             cell.selectionStyle = .none
             return cell
         case .rating(let rating):

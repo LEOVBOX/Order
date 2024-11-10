@@ -85,6 +85,7 @@ struct TableViewModel {
         struct TextField {
             var text: String?
             let hint: String?
+            var index: Int?
         }
         
         struct Checkbox {

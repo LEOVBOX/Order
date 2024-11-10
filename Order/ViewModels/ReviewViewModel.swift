@@ -21,14 +21,19 @@ class ReviewViewModel {
         
         cellViewModels.append(.init(type: .photoCollection(.init(imageNames: ["hand1", "hand2", "hand3", "hand4", "hand5", "hand6", "hand7"]))))
         
+        // START TEXT FIELDS INIT
+        var textFieldStartIndex = cellViewModels.count
+        
         // advantages
-        cellViewModels.append(.init(type: .textField(.init(text: review.advantages, hint: "Достоинства"))))
+        cellViewModels.append(.init(type: .textField(.init(text: review.advantages, hint: "Достоинства", index: cellViewModels.count - textFieldStartIndex))))
         
         // disadvantages
-        cellViewModels.append(.init(type: .textField(.init(text: review.disadvantages, hint: "Недостатки"))))
+        cellViewModels.append(.init(type: .textField(.init(text: review.disadvantages, hint: "Недостатки", index: cellViewModels.count - textFieldStartIndex))))
         
         // comment
-        cellViewModels.append(.init(type: .textField(.init(text: review.comment, hint: "Комментарий"))))
+        cellViewModels.append(.init(type: .textField(.init(text: review.comment, hint: "Комментарий", index: cellViewModels.count - textFieldStartIndex))))
+        
+        // END TEXT FIELDS INIT
         
         // checkbox
         cellViewModels.append(.init(type: .checkBox(.init(label: "Оставить отзыв анонимно", isChecked: false))))
