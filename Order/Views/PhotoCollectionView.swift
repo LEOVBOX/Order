@@ -13,10 +13,16 @@ class PhotoCollectionView: UITableViewCell, UICollectionViewDelegate, UICollecti
         
         // Удалить изображение из массива отображаемых изображений
         let deletedImage = displayedImages.remove(at: indexPath.item)
+        
+        // Ставим удаленное изображение на последнее место в массиве всех изображений
         allImages.removeAll(where: { value in
             return value == deletedImage
         })
         allImages.append(deletedImage)
+        
+        //if displayedImages.count < allImages.count {
+            //isAddIconShown = true
+        //}
         
         // Обновить коллекцию с анимацией
         collectionView.performBatchUpdates({
@@ -116,7 +122,7 @@ extension PhotoCollectionView {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as! PhotoCollectionViewCell
         if indexPath.item < allImages.count {
-            if indexPath.item < displayedImages.count && displayedImages[indexPath.item] != addNewCellImage  {
+            if indexPath.item < displayedImages.count {
                 cell.configure(with: displayedImages[indexPath.item], isDeleteable: true, deleteClousure: deleteCell(cell:))
             } else {
                 cell.configure(with: addNewCellImage, isDeleteable: false) // Иконка добавления
@@ -135,6 +141,14 @@ extension PhotoCollectionView {
     func addNextImage() {
         guard displayedImages.count < allImages.count else { return }
         displayedImages.append(allImages[displayedImages.count]) // Добавляем следующее изображение
+        // Удаляем картинку добавления из массива отображаемых картинок
+//        if displayedImages.count == allImages.count {
+//            isAddIconShown = false
+//            displayedImages.removeAll(where: { image in
+//                return image == addNewCellImage
+//            })
+//        }
+
         collectionView.reloadData()
         dataUpdated?()
     }

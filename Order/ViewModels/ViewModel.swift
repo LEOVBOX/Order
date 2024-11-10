@@ -36,6 +36,7 @@ class ViewModel {
     }
     
     func createTable(order: Order) {
+        cellViewModels.removeAll()
         productsCount = order.products.count
         
         // Добавляем информацию о промокодах

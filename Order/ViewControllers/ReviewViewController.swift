@@ -12,11 +12,9 @@ class ReviewViewController: UIViewController {
     private let viewModel = ReviewViewModel()
     
     private func showReview(review: Review) {
-        viewModel.cellViewModels.removeAll()
-        
         self.navigationItem.title = "Напишите отзыв"
-        
         viewModel.createTable(review: review)
+        
     }
     
     private lazy var tableView: UITableView = {
@@ -36,7 +34,6 @@ class ReviewViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = UIColor(hexString: "#FF4611")
-        self.navigationController?.navigationBar.backItem?.title = ""
         view.backgroundColor = .white
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false

@@ -15,13 +15,12 @@ class ProductsViewController: UIViewController {
     private func showReviewController(product: Product) {
         var review = Review(product: product)
         DispatchQueue.main.asyncAfter(deadline: .now()) { [weak self] in
-            self?.navigationController?.pushViewController(ReviewViewController(review: review), animated: false)
+            self?.navigationItem.backButtonTitle = ""
+            self?.navigationController?.pushViewController(ReviewViewController(review: review), animated: true)
         }
     }
     
     private func showProducts(products: [Product]) {
-        viewModel.cellViewModels.removeAll()
-        
         self.navigationItem.title = "Напишите отзыв"
         
         viewModel.createTable(products: testProducts)

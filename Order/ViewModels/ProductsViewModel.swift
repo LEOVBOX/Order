@@ -12,6 +12,7 @@ class ProductsViewModel {
     lazy var cellViewModels: [TableViewModel] = []
     
     func createTable(products: [Product]) {
+        cellViewModels.removeAll()
         for product in products {
             cellViewModels.append(.init(type: .product(.init(title: product.title, imageName: product.imageName ?? nil))))
         }

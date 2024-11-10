@@ -19,6 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         
         let navigationController = UINavigationController(rootViewController: ProductsViewController())
+
 //        let navigationController = UINavigationController(rootViewController: ReviewViewController())
         
         scene.windows.first?.rootViewController = navigationController

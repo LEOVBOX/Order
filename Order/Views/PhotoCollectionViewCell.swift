@@ -23,7 +23,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         let button = UIButton(type: .system)
         button.setTitle("✕", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .black.withAlphaComponent(0.5)
+        button.backgroundColor = .none
         button.addTarget(self, action: #selector(deleteButtonAction), for: .touchUpInside)
         button.layer.cornerRadius = 10
         return button
@@ -57,7 +57,9 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     
     func configure(with image: UIImage, isDeleteable: Bool = false, deleteClousure: ((PhotoCollectionViewCell) -> Void)? = nil) {
         imageView.image = image
+        imageView.contentMode = .scaleAspectFill
         if isDeleteable {
+            imageView.backgroundColor = .none
             contentView.addSubview(deleteButton)
             deleteButton.translatesAutoresizingMaskIntoConstraints = false
             

@@ -23,7 +23,7 @@ class ViewController: UIViewController {
     
     private func showPromocodeViewController() {
         DispatchQueue.main.asyncAfter(deadline: .now()) { [weak self] in
-            self?.navigationController?.pushViewController(PromocodeViewController(), animated: false)
+            self?.navigationController?.pushViewController(PromocodeViewController(), animated: true)
         }
     }
     
