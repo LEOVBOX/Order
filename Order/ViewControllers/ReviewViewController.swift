@@ -93,7 +93,7 @@ extension ReviewViewController: UITextFieldDelegate {
             return false
         })
             as? TextFieldTableViewCell, let index = cell.viewModel?.index {
-            var nextTextFieldCell = tableView.visibleCells.first(where: { cell in
+            let nextTextFieldCell = tableView.visibleCells.first(where: { cell in
                 if let textFieldCell = cell as? TextFieldTableViewCell {
                     if textFieldCell.viewModel?.index == index + 1 {
                         return true
@@ -103,10 +103,12 @@ extension ReviewViewController: UITextFieldDelegate {
             }) as? TextFieldTableViewCell
             
             nextTextFieldCell?.textField.becomeFirstResponder()
+            cell.textField.returnKeyType = .next
         }
         
         else {
             textField.resignFirstResponder()
+            
         }
         return true
     }

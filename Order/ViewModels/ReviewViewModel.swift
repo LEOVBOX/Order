@@ -25,13 +25,13 @@ class ReviewViewModel {
         var textFieldStartIndex = cellViewModels.count
         
         // advantages
-        cellViewModels.append(.init(type: .textField(.init(text: review.advantages, hint: "Достоинства", index: cellViewModels.count - textFieldStartIndex))))
+        cellViewModels.append(.init(type: .textField(.init(text: review.advantages, hint: "Достоинства", index: cellViewModels.count - textFieldStartIndex, returnKeyType: .next))))
         
         // disadvantages
-        cellViewModels.append(.init(type: .textField(.init(text: review.disadvantages, hint: "Недостатки", index: cellViewModels.count - textFieldStartIndex))))
+        cellViewModels.append(.init(type: .textField(.init(text: review.disadvantages, hint: "Недостатки", index: cellViewModels.count - textFieldStartIndex, returnKeyType: .next))))
         
         // comment
-        cellViewModels.append(.init(type: .textField(.init(text: review.comment, hint: "Комментарий", index: cellViewModels.count - textFieldStartIndex))))
+        cellViewModels.append(.init(type: .textField(.init(text: review.comment, hint: "Комментарий", index: cellViewModels.count - textFieldStartIndex, returnKeyType: .done))))
         
         // END TEXT FIELDS INIT
         

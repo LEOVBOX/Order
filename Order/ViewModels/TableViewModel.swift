@@ -83,9 +83,14 @@ struct TableViewModel {
         }
         
         struct TextField {
+            enum returnKeyType {
+                case next
+                case done
+            }
             var text: String?
             let hint: String?
             var index: Int?
+            var returnKeyType: returnKeyType?
         }
         
         struct Checkbox {

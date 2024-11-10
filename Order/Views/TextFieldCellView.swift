@@ -100,6 +100,15 @@ class TextFieldTableViewCell: UITableViewCell {
         if let text = viewModel.text {
             textField.text = text
         }
+        
+        if let returnKeyType = viewModel.returnKeyType {
+            switch returnKeyType {
+            case .done:
+                textField.returnKeyType = .done
+            case .next:
+                textField.returnKeyType = .next
+            }
+        }
     }
     
     required init?(coder: NSCoder) {
