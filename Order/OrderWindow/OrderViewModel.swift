@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ViewModel {
+class OrderViewModel {
     
     lazy var price: Double = 0
     lazy var promocodesDiscount: Double = 0

@@ -1,39 +1,62 @@
 //
-//  ProductsViewController.swift
+//  ViewController.swift
 //  Order
 //
-//  Created by Леонид Шайхутдинов on 31.10.2024.
+//  Created by Леонид Шайхутдинов on 17.10.2024.
 //
 
 import UIKit
 
-class ProductsViewController: UIViewController {
-    private let viewModel = ProductsViewModel()
+class OrderViewController: UIViewController {
+
+    private let viewModel = OrderViewModel()
+
+
+    private func showOrder(order: Order) {
+        // Очищаем текущие данные
+        viewModel.cellViewModels.removeAll()
+        
+        self.navigationItem.title = order.screenTitle
+
+        viewModel.createTable(order: order)
+    }
     
-    private var products: [Product] = testProducts
-    
-    private func showReviewController(product: Product) {
-        var review = Review(product: product)
+    private func showPromocodeViewController() {
         DispatchQueue.main.asyncAfter(deadline: .now()) { [weak self] in
-            self?.navigationItem.backButtonTitle = ""
-            self?.navigationController?.pushViewController(ReviewViewController(review: review), animated: true)
+            self?.navigationController?.pushViewController(PromocodeViewController(), animated: true)
         }
     }
     
-    private func showProducts(products: [Product]) {
-        self.navigationItem.title = "Напишите отзыв"
-        
-        viewModel.createTable(products: testProducts)
+    private func showPromocodesCountAlert() {
+        let alertController = UIAlertController(title: title, message: "Для каждого продукта можно прменить только 1 промокод", preferredStyle: .alert)
+            
+            // Добавляем кнопку "OK"
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            
+            // Показываем предупреждение
+            present(alertController, animated: true, completion: nil)
     }
+    
+    private lazy var seporatorView: UIView = {
+        let seporator = UIView()
+        seporator.backgroundColor = UIColor(hexString: "#F6F6F6")
+        return seporator
+    }()
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(ProductView.self, forCellReuseIdentifier: String(describing: ProductView.self))
+        tableView.backgroundColor = UIColor(hexString: "#F6F6F6")
+        tableView.register(TitleCell.self, forCellReuseIdentifier: String(describing: TitleCell.self))
+        tableView.register(PromoCell.self, forCellReuseIdentifier: String(describing: PromoCell.self))
+        tableView.register(ButtonCell.self, forCellReuseIdentifier: String(describing: ButtonCell.self))
+        tableView.register(ResultCell.self, forCellReuseIdentifier: String(describing: ResultCell.self))
         tableView.separatorStyle = .none
         return tableView
     }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,18 +68,21 @@ class ProductsViewController: UIViewController {
         tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
         viewModel.dataUpdated = tableView.reloadData
-        showProducts(products: testProducts)
+        viewModel.showPromcodesCountAlert = self.showPromocodesCountAlert
+        viewModel.showPromocodesViewController = self.showPromocodeViewController
+        showOrder(order: testOrder)
     }
 }
 
-extension ProductsViewController: UITextFieldDelegate {
+extension OrderViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
 }
 
-extension ProductsViewController: UITableViewDelegate, UITableViewDataSource {
+
+extension OrderViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.cellViewModels.count
     }
@@ -105,23 +131,15 @@ extension ProductsViewController: UITableViewDelegate, UITableViewDataSource {
             cell.viewModel = text
             cell.selectionStyle = .none
             return cell
-        case .product(let product):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductView.self)) as? ProductView else {
-                return UITableViewCell()
-            }
-            
-            cell.viewModel = product
-            return cell
-            
         default:
             return UITableViewCell()
         }
-    
         
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        showReviewController(product: products[indexPath.row])
+        
     }
 }
+
+
