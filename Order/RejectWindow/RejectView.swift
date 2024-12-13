@@ -31,7 +31,11 @@ struct RejectView: View {
     @State private var isLoading: Bool = false
     @State private var showToast: Bool = false
     
-    @ObservedObject var viewModel = RejectViewModel()
+    @ObservedObject var viewModel = RejectViewModel(isMoneyNotification: true)
+    
+    func returnOnPrevView() {
+        
+    }
     
     var body: some View {
         NavigationView {
@@ -67,10 +71,8 @@ struct RejectView: View {
                         }
                         
                         OptionToggle(isSelected: $selectedOption, optionIndex: viewModel.rejectOptions.count, label: "Другое")
-                      
-                        
                     }
-                    .padding(.init(top: 15, leading: 15, bottom: 0, trailing: 15))
+                    .padding(.init(top: 16, leading: 16, bottom: 0, trailing: 16))
                     
                     if selectedOption == viewModel.rejectOptions.count {
                         TextField("Опишите проблему", text: $text)
@@ -115,6 +117,13 @@ struct RejectView: View {
                 .padding()
                 .navigationTitle("Укажите причину отмены")
                 .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigation) {
+                        Button("BackButton", systemImage: "chevron.left", action: returnOnPrevView)
+                            .tint(Color(r: 255, g: 70, b: 17))
+                    }
+                }
+                
                 
                 if isLoading {
                     Color.black.opacity(0.4)
@@ -138,21 +147,24 @@ struct OptionToggle: View {
     var label: String
     
     var body: some View {
-        Toggle(isOn: Binding(
-            get: { isSelected == optionIndex },
-            set: { newValue in
-                if newValue {
-                    isSelected = optionIndex
-                } else {
-                    isSelected = nil
+        HStack {
+            Toggle(isOn: Binding(
+                get: { isSelected == optionIndex },
+                set: { newValue in
+                    if newValue {
+                        isSelected = optionIndex
+                    } else {
+                        isSelected = nil
+                    }
                 }
+            )) {
+                Text(label)
+                    .lineLimit(nil)
+                    .multilineTextAlignment(.leading)
             }
-        )) {
-            Text(label)
-                .lineLimit(nil)
-                .multilineTextAlignment(.leading)
+            .toggleStyle(CheckboxToggleStyle())
         }
-        .toggleStyle(CheckboxToggleStyle())
+        
     }
 }
 
