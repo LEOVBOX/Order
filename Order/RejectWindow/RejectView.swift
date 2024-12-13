@@ -31,12 +31,13 @@ struct RejectView: View {
     @State private var isLoading: Bool = false
     @State private var showToast: Bool = false
     
-    let viewModel = RejectViewModel()
+    @ObservedObject var viewModel = RejectViewModel()
     
     var body: some View {
         NavigationView {
             ZStack {
                 VStack {
+                    
                     if isCancelButtonPressed && selectedOption == nil {
                         HStack {
                             Text("Пожалуйста, выберите причину")
@@ -82,17 +83,19 @@ struct RejectView: View {
                             .padding(.top, 15)
                     }
 
-                    HStack {
-                        Text("Обычно деньги сразу возвращаются на карту. В некоторых случаях это может занять до 3 рабочих дней.")
-                            .padding(.all, 15)
-                        
-                        Image("yellowCircleWarning")
-                            .padding(.trailing, 14)
-                            .offset(x: 0, y: -20)
+                    if (viewModel.isMoneyNotification) {
+                        HStack {
+                            Text("Обычно деньги сразу возвращаются на карту. В некоторых случаях это может занять до 3 рабочих дней.")
+                                .padding(.all, 15)
+                            
+                            Image("yellowCircleWarning")
+                                .padding(.trailing, 14)
+                                .offset(x: 0, y: -20)
+                        }
+                        .background(Color(r: 254, g: 247, b: 222))
+                        .cornerRadius(12)
+                        .padding(.top, 15)
                     }
-                    .background(Color(r: 254, g: 247, b: 222))
-                    .cornerRadius(12)
-                    .padding(.top, 15)
                     
                     CustomButton(title: "Отменить заказ", backgroundColor: Color(r: 255, g: 70, b: 17)) {
                         if let _ = selectedOption {
@@ -107,9 +110,9 @@ struct RejectView: View {
                         }
                     }
                     .padding(.top, 15)
+                    Spacer()
                 }
                 .padding()
-                .offset(x: 0, y: -90)
                 .navigationTitle("Укажите причину отмены")
                 .navigationBarTitleDisplayMode(.inline)
                 
@@ -122,6 +125,7 @@ struct RejectView: View {
                         .cornerRadius(12)
                         .shadow(radius: 5)
                 }
+            
             }
             .toast(isPresented: $showToast, message: "Заказ успешно отменён!")
         }
