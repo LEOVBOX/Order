@@ -41,7 +41,6 @@ struct RejectView: View {
         NavigationView {
             ZStack {
                 VStack {
-                    
                     if isCancelButtonPressed && selectedOption == nil {
                         HStack {
                             Text("Пожалуйста, выберите причину")

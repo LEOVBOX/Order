@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct StartWindowView: View {
     var body: some View {
         NavigationView {
             List {
@@ -17,4 +17,8 @@ struct ContentView: View {
             }
         }
     }
+}
+
+#Preview {
+    StartWindowView()
 }
