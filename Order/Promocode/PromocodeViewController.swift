@@ -16,7 +16,7 @@ class PromocodeViewController: UIViewController {
         }
     }
     
-    private let viewModel = PromocodeViewModel()
+    private let viewModel = PromocodeInputViewModel()
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
