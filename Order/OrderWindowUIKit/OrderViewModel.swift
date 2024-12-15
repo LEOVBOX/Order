@@ -7,7 +7,18 @@
 
 import Foundation
 
-class OrderViewModel {
+class OrderViewModel: ObservableObject {
+    
+    var order: Order {
+        didSet {
+            createProductsViewModels()
+        }
+    }
+    
+    init(order: Order) {
+        self.order = order
+        createProductsViewModels()
+    }
     
     lazy var price: Double = 0
     lazy var promocodesDiscount: Double = 0
@@ -28,11 +39,27 @@ class OrderViewModel {
     private lazy var toggledPromoCells: [TableViewModel.ViewModelType.Promo] = []
     lazy var cellViewModels: [TableViewModel] = []
     
+    lazy var productsViewModels: [TableViewModel.ViewModelType.Product] = []
+    
     private func formattedDate(_ date: Date?) -> String {
         guard let date = date else { return "" }
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         return formatter.string(from: date)
+    }
+    
+    func createProductsViewModels() {
+        for product in order.products {
+            var productViewModel = TableViewModel.ViewModelType.Product(
+                title: product.title,
+                imageUrl: product.imageUrl,
+                size: product.size,
+                price: product.price,
+                baseDiscountPercent: product.baseDiscountPercent
+            )
+            productsViewModels.append(productViewModel)
+        }
+        
     }
     
     func createTable(order: Order) {
@@ -77,7 +104,7 @@ class OrderViewModel {
         
         // Calculate summ without discount
         for product in order.products {
-            price += product.price
+            price += Double(product.price)
         }
         
         for promo in toggledPromoCells {

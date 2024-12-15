@@ -9,7 +9,7 @@ import UIKit
 
 class OrderViewController: UIViewController {
 
-    private let viewModel = OrderViewModel()
+    private let viewModel = OrderViewModel(order: testOrder)
 
 
     private func showOrder(order: Order) {

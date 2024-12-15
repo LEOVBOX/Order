@@ -23,16 +23,6 @@ struct Order {
 
     }
 
-    
-
-    struct Product {
-
-        let price: Double
-
-        let title: String
-
-    }
-
     var screenTitle: String
 
     var promocodes: [Promocode]
@@ -99,11 +89,8 @@ let testOrder = Order(
             active: false
         )
     ],
-    products: [
-        Order.Product(price: 100.0, title: "Товар 1"),
-        Order.Product(price: 100.0, title: "Товар 2")
-        
-    ],
+    
+    products: testProducts,
     paymentDiscount: 50.0,
     baseDiscount: 30.0
 )

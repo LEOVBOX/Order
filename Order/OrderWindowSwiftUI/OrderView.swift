@@ -6,19 +6,19 @@
 //
 
 import SwiftUI
-
+ 
 struct OrderView: View {
-    func showPrevView() {
-        
-    }
+    @Environment(\.presentationMode) var presentationMode
     
+    @ObservedObject var viewModel: OrderViewModel
+
     var body: some View {
         NavigationView {
             ZStack {
                 ScrollView (showsIndicators: false){
                     VStack(spacing: 0) {
                         // Состав заказа
-                        OrderCompositionView()
+                        ProductsListView(viewModel: self.viewModel)
                             //.background(.green)
                         
                         Rectangle()
@@ -49,19 +49,22 @@ struct OrderView: View {
                 }
                 
             }
-            .navigationTitle("Оформление заказа")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem (placement: .navigation) {
-                    Button("BackButton", systemImage: "chevron.left", action: showPrevView)
-                        .tint(Color(r: 255, g: 70, b: 17))
-                }
-            }
             
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle("Оформление заказа")
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem (placement: .navigation) {
+                Button("BackButton", systemImage: "chevron.left", action: {
+                    presentationMode.wrappedValue.dismiss()
+                })
+                    .tint(Color(r: 255, g: 70, b: 17))
+            }
         }
     }
 }
 
 #Preview {
-    OrderView()
+    OrderView(viewModel: OrderViewModel(order: testOrder))
 }

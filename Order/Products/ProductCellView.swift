@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProductView: UITableViewCell {
+class ProductCellView: UITableViewCell {
     var viewModel: TableViewModel.ViewModelType.Product? {
         didSet {
             updateUI()
@@ -32,8 +32,8 @@ class ProductView: UITableViewCell {
         return label
     }()
     
-    private lazy var image: UIImageView = {
-        let imageView = UIImageView()
+    private lazy var productImage: DownloadableImageView = {
+        let imageView = DownloadableImageView()
         return imageView
     }()
     
@@ -46,20 +46,19 @@ class ProductView: UITableViewCell {
         guard let viewModel else { return }
         
         titleLabel.text = viewModel.title
-        if let imageName = viewModel.imageName {
-            image.image = UIImage(named: imageName)
-        }
+        productImage.loadImage(url: viewModel.imageUrl)
+        
 
-        if !viewModel.isArrawEnabled {
+        if !viewModel.isListElement {
             chevronImageView.image = .none
-            if let caption = viewModel.caption {
-                captionView.text = caption
+            if let size = viewModel.sizeString {
+                sizeLabel.text = size
             }
         }
     
     }
     
-    private lazy var captionView: UILabel = {
+    private lazy var sizeLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor(hexString: "#7A7A7A")
         label.font = UIFont.systemFont(ofSize: 14)
@@ -169,14 +168,14 @@ class ProductView: UITableViewCell {
         ])
         
         // image constraints
-        mainView.addSubview(image)
-        image.translatesAutoresizingMaskIntoConstraints = false
+        mainView.addSubview(productImage)
+        productImage.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            image.leftAnchor.constraint(equalTo: mainView.leftAnchor),
-            image.widthAnchor.constraint(equalToConstant: ImageConstraints.imageWidth.value),
-            image.topAnchor.constraint(equalTo: mainView.topAnchor),
-            image.bottomAnchor.constraint(equalTo: mainView.bottomAnchor),
-            image.heightAnchor.constraint(equalToConstant: ImageConstraints.imageHeight.value)
+            productImage.leftAnchor.constraint(equalTo: mainView.leftAnchor),
+            productImage.widthAnchor.constraint(equalToConstant: ImageConstraints.imageWidth.value),
+            productImage.topAnchor.constraint(equalTo: mainView.topAnchor),
+            productImage.bottomAnchor.constraint(equalTo: mainView.bottomAnchor),
+            productImage.heightAnchor.constraint(equalToConstant: ImageConstraints.imageHeight.value)
         ])
         
         // descriptionView constraints
@@ -187,7 +186,7 @@ class ProductView: UITableViewCell {
             descriptionView.topAnchor.constraint(equalTo: mainView.topAnchor, constant: DescriptionViewConstraints.topPadding.value),
             descriptionView.rightAnchor.constraint(equalTo: mainView.rightAnchor),
             descriptionView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: DescriptionViewConstraints.bottomPadding.value),
-            descriptionView.leftAnchor.constraint(equalTo: image.rightAnchor, constant: DescriptionViewConstraints.leftPadding.value)
+            descriptionView.leftAnchor.constraint(equalTo: productImage.rightAnchor, constant: DescriptionViewConstraints.leftPadding.value)
         ])
         
         // chevronImageView constraints
@@ -201,13 +200,13 @@ class ProductView: UITableViewCell {
         ])
         
         // captionView constraints
-        descriptionView.addSubview(captionView)
-        captionView.translatesAutoresizingMaskIntoConstraints = false
+        descriptionView.addSubview(sizeLabel)
+        sizeLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            captionView.leftAnchor.constraint(equalTo: descriptionView.leftAnchor),
-            captionView.rightAnchor.constraint(equalTo: descriptionView.rightAnchor),
-            captionView.bottomAnchor.constraint(equalTo: descriptionView.bottomAnchor),
-            captionView.heightAnchor.constraint(equalToConstant: 20)
+            sizeLabel.leftAnchor.constraint(equalTo: descriptionView.leftAnchor),
+            sizeLabel.rightAnchor.constraint(equalTo: descriptionView.rightAnchor),
+            sizeLabel.bottomAnchor.constraint(equalTo: descriptionView.bottomAnchor),
+            sizeLabel.heightAnchor.constraint(equalToConstant: 20)
         ])
         
         // titleLabel constraints
@@ -217,7 +216,7 @@ class ProductView: UITableViewCell {
         NSLayoutConstraint.activate([
             titleLabel.leftAnchor.constraint(equalTo: descriptionView.leftAnchor),
             titleLabel.topAnchor.constraint(equalTo: descriptionView.topAnchor, constant: TitleLabelConstraints.topPadding.value),
-            titleLabel.bottomAnchor.constraint(equalTo: captionView.topAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: sizeLabel.topAnchor),
             titleLabel.rightAnchor.constraint(equalTo: chevronImageView.leftAnchor)
         ])
         

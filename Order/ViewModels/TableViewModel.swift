@@ -68,11 +68,66 @@ struct TableViewModel {
             let action: ((String) -> Bool)?
         }
         
-        struct Product {
+//        struct Product {
+//            var title: String
+//            var imageName: String?
+//            var caption: String?
+//            var isArrawEnabled: Bool = true
+//        }
+        
+        class Product: ObservableObject {
             var title: String
-            var imageName: String?
-            var caption: String?
-            var isArrawEnabled: Bool = true
+            var imageUrl: String
+            var size: Float?
+            var isListElement: Bool = false
+            var price: Float
+            var priceWithBaseDiscount: Float? {
+                if baseDiscountPercent > 0 {
+                    return price - price * Float(baseDiscountPercent) / 100
+                }
+                return nil
+            }
+            var baseDiscountPercent: Int
+            
+            var baseDiscountPercentString: String? {
+                if baseDiscountPercent > 0 {
+                    return "-\(baseDiscountPercent)%"
+                }
+                return nil
+            }
+            
+            var sizeString: String? {
+                guard let size = self.size else {
+                    return nil
+                }
+                
+                return String(format: "%.1f", size)
+            }
+            
+            var priceString: String? {
+                let priceString = String(format: "%.2f", price)
+                return priceString + " ₽"
+            }
+            
+            var priceWithBaseDiscountString: String? {
+                guard let priceWithBaseDiscount = self.priceWithBaseDiscount else {
+                    return nil
+                }
+                
+                let priceString = String(format: "%.2f", priceWithBaseDiscount)
+                return priceString + " ₽"
+            }
+            
+            init(title: String, imageUrl: String, size: Float? = nil, isListElement: Bool = false, price: Float,
+                 baseDiscountPercent: Int) {
+                self.title = title
+                self.imageUrl = imageUrl
+                self.size = size
+                self.isListElement = isListElement
+                self.price = price
+                self.baseDiscountPercent = baseDiscountPercent
+            }
+            
         }
         
         struct Rating {

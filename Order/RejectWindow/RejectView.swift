@@ -25,6 +25,8 @@ struct CustomButton: View {
 }
 
 struct RejectView: View {
+    @Environment(\.presentationMode) var presentationMode
+
     @State private var selectedOption: Int? = nil
     @State private var text: String = ""
     @State private var isCancelButtonPressed: Bool = false
@@ -114,14 +116,6 @@ struct RejectView: View {
                     Spacer()
                 }
                 .padding()
-                .navigationTitle("Укажите причину отмены")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigation) {
-                        Button("BackButton", systemImage: "chevron.left", action: returnOnPrevView)
-                            .tint(Color(r: 255, g: 70, b: 17))
-                    }
-                }
                 
                 
                 if isLoading {
@@ -135,7 +129,19 @@ struct RejectView: View {
                 }
             
             }
+            
             .toast(isPresented: $showToast, message: "Заказ успешно отменён!")
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle("Оформление заказа")
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem (placement: .navigation) {
+                Button("BackButton", systemImage: "chevron.left", action: {
+                    presentationMode.wrappedValue.dismiss()
+                })
+                    .tint(Color(r: 255, g: 70, b: 17))
+            }
         }
     }
 }

@@ -14,6 +14,9 @@ struct StartWindowView: View {
                 NavigationLink(destination: RejectView()) {
                     Text("Отменить заказ")
                 }
+                NavigationLink(destination: OrderView(viewModel: OrderViewModel(order: testOrder))) {
+                    Text("Заказ")
+                }
             }
         }
     }

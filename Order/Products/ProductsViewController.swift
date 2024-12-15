@@ -28,7 +28,7 @@ class ProductsViewController: UIViewController {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(ProductView.self, forCellReuseIdentifier: String(describing: ProductView.self))
+        tableView.register(ProductCellView.self, forCellReuseIdentifier: String(describing: ProductCellView.self))
         tableView.separatorStyle = .none
         return tableView
     }()
@@ -105,7 +105,7 @@ extension ProductsViewController: UITableViewDelegate, UITableViewDataSource {
             cell.selectionStyle = .none
             return cell
         case .product(let product):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductView.self)) as? ProductView else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductCellView.self)) as? ProductCellView else {
                 return UITableViewCell()
             }
             

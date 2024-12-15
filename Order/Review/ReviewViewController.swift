@@ -21,7 +21,7 @@ class ReviewViewController: UIViewController {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(ProductView.self, forCellReuseIdentifier: String(describing: ProductView.self))
+        tableView.register(ProductCellView.self, forCellReuseIdentifier: String(describing: ProductCellView.self))
         tableView.register(TextFieldTableViewCell.self, forCellReuseIdentifier: String(describing: TextFieldTableViewCell.self))
         tableView.register(RatingCellView.self, forCellReuseIdentifier: String(describing: RatingCellView.self))
         tableView.register(ButtonCell.self, forCellReuseIdentifier: String(describing: ButtonCell.self))
@@ -169,7 +169,7 @@ extension ReviewViewController: UITableViewDelegate, UITableViewDataSource {
             cell.selectionStyle = .none
             return cell
         case .product(let product):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductView.self)) as? ProductView else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductCellView.self)) as? ProductCellView else {
                 return UITableViewCell()
             }
             

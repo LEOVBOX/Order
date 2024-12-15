@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		B30C6A432CD8DC0F009007BC /* CautionViewCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30C6A422CD8DC0F009007BC /* CautionViewCellView.swift */; };
-		B3258AD22D0C3A18006C73DA /* StartWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3258AD12D0C3A11006C73DA /* StartWindowView.swift */; };
 		B33490072CC4785C000FF836 /* TitleCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33490062CC4785C000FF836 /* TitleCellView.swift */; };
 		B334900B2CC478A6000FF836 /* ButtonCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B334900A2CC478A6000FF836 /* ButtonCellView.swift */; };
 		B357FBA32CD7712E005391AD /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = B357FBA22CD7712E005391AD /* Review.swift */; };
@@ -28,7 +27,6 @@
 
 /* Begin PBXFileReference section */
 		B30C6A422CD8DC0F009007BC /* CautionViewCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CautionViewCellView.swift; sourceTree = "<group>"; };
-		B3258AD12D0C3A11006C73DA /* StartWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartWindowView.swift; sourceTree = "<group>"; };
 		B33490062CC4785C000FF836 /* TitleCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCellView.swift; sourceTree = "<group>"; };
 		B334900A2CC478A6000FF836 /* ButtonCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCellView.swift; sourceTree = "<group>"; };
 		B357FBA22CD7712E005391AD /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
@@ -55,6 +53,9 @@
 		B391B89D2D0B082E00496C5E /* PhotoCollection */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = PhotoCollection; sourceTree = "<group>"; };
 		B391B89E2D0B090A00496C5E /* OrderWindowUIKit */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = OrderWindowUIKit; sourceTree = "<group>"; };
 		B391B89F2D0B0B9200496C5E /* RejectWindow */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = RejectWindow; sourceTree = "<group>"; };
+		B3962D252D0F6D8200C13D3D /* Services */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Services; sourceTree = "<group>"; };
+		B3962D282D0F6DF000C13D3D /* Storages */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Storages; sourceTree = "<group>"; };
+		B3962D2B2D0F722600C13D3D /* DownloadableImageView */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = DownloadableImageView; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,8 +118,10 @@
 		B3F75EB02CC121E300AE19B2 /* Order */ = {
 			isa = PBXGroup;
 			children = (
+				B3962D2B2D0F722600C13D3D /* DownloadableImageView */,
+				B3962D282D0F6DF000C13D3D /* Storages */,
+				B3962D252D0F6D8200C13D3D /* Services */,
 				B3258AD62D0C802D006C73DA /* OrderWindowSwiftUI */,
-				B3258AD12D0C3A11006C73DA /* StartWindowView.swift */,
 				B391B89F2D0B0B9200496C5E /* RejectWindow */,
 				B391B89E2D0B090A00496C5E /* OrderWindowUIKit */,
 				B391B89D2D0B082E00496C5E /* PhotoCollection */,
@@ -162,6 +165,9 @@
 				B391B89D2D0B082E00496C5E /* PhotoCollection */,
 				B391B89E2D0B090A00496C5E /* OrderWindowUIKit */,
 				B391B89F2D0B0B9200496C5E /* RejectWindow */,
+				B3962D252D0F6D8200C13D3D /* Services */,
+				B3962D282D0F6DF000C13D3D /* Storages */,
+				B3962D2B2D0F722600C13D3D /* DownloadableImageView */,
 			);
 			name = Order;
 			productName = Order;
@@ -229,7 +235,6 @@
 				B3F75EC62CC121FB00AE19B2 /* Order.swift in Sources */,
 				B361D59E2CD34DB0003932F1 /* Product.swift in Sources */,
 				B376B7B52CCE2CF30099B615 /* UIHexColor.swift in Sources */,
-				B3258AD22D0C3A18006C73DA /* StartWindowView.swift in Sources */,
 				B3F75EB42CC121E300AE19B2 /* SceneDelegate.swift in Sources */,
 				B3DC76C92CD7A496004900A8 /* CheckboxCellView.swift in Sources */,
 				B334900B2CC478A6000FF836 /* ButtonCellView.swift in Sources */,
