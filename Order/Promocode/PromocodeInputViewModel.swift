@@ -7,7 +7,7 @@
 
 import Foundation
 
-class PromocodeViewModel {
+class PromocodeInputViewModel {
     var dataUpdated: (() -> Void)?
     var showWarining: (() -> Void)?
     var showMainVC: ((Order) -> Void)?
