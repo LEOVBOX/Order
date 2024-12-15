@@ -14,7 +14,7 @@ class ProductsViewModel {
     func createTable(products: [Product]) {
         cellViewModels.removeAll()
         for product in products {
-            cellViewModels.append(.init(type: .product(.init(title: product.title, imageUrl: product.imageUrl, isListElement: true, price: product.price, baseDiscountPercent: product.baseDiscountPercent))))
+            cellViewModels.append(.init(type: .product(.init(title: product.title, imageUrl: product.imageUrl, count: product.count, isListElement: true, price: product.price, baseDiscountPercent: product.baseDiscountPercent))))
         }
         
     }

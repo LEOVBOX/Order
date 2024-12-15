@@ -50,10 +50,11 @@ class OrderViewModel: ObservableObject {
     
     func createProductsViewModels() {
         for product in order.products {
-            var productViewModel = TableViewModel.ViewModelType.Product(
+            let productViewModel = TableViewModel.ViewModelType.Product(
                 title: product.title,
                 imageUrl: product.imageUrl,
                 size: product.size,
+                count: product.count,
                 price: product.price,
                 baseDiscountPercent: product.baseDiscountPercent
             )

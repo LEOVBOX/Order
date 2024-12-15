@@ -51,19 +51,20 @@ struct ProductView: View {
             
             // Description
             VStack(alignment: .leading, spacing: 8) {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 2) {
                     Text(viewModel.title)
                         .font(.system(size: 14))
                     
-                    HStack {
-                        if let size = viewModel.sizeString {
-                            Text("Размер "+size)
-                                .foregroundStyle(Color(r: 122, g: 122, b: 122))
-                                .font(.system(size: 14))
-                        }
-                        
-                        // TODO: Добавить количество
-                        //if let count = viewModel.
+                
+                    if let size = viewModel.sizeString {
+                        Text("\(viewModel.count) шт. • Размер: "+size)
+                            .foregroundStyle(Color(r: 122, g: 122, b: 122))
+                            .font(.system(size: 14))
+                    }
+                    else {
+                        Text("\(viewModel.count) шт.")
+                            .foregroundStyle(Color(r: 122, g: 122, b: 122))
+                            .font(.system(size: 14))
                     }
                     
                 }

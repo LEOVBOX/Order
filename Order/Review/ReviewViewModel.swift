@@ -14,7 +14,7 @@ class ReviewViewModel {
     
     func createTable(review: Review) {
         // product
-        cellViewModels.append(.init(type: .product(.init(title: review.product.title, imageUrl: review.product.imageUrl, price: review.product.price, baseDiscountPercent: review.product.baseDiscountPercent))))
+        cellViewModels.append(.init(type: .product(.init(title: review.product.title, imageUrl: review.product.imageUrl, count: review.product.count, price: review.product.price, baseDiscountPercent: review.product.baseDiscountPercent))))
         
         // rating
         cellViewModels.append(.init(type: .rating(.init(rating: review.rating))))

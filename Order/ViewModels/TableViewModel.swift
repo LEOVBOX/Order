@@ -68,17 +68,11 @@ struct TableViewModel {
             let action: ((String) -> Bool)?
         }
         
-//        struct Product {
-//            var title: String
-//            var imageName: String?
-//            var caption: String?
-//            var isArrawEnabled: Bool = true
-//        }
-        
         class Product: ObservableObject {
             var title: String
             var imageUrl: String
             var size: Float?
+            var count: Int
             var isListElement: Bool = false
             var price: Float
             var priceWithBaseDiscount: Float? {
@@ -101,7 +95,12 @@ struct TableViewModel {
                     return nil
                 }
                 
-                return String(format: "%.1f", size)
+                if size.truncatingRemainder(dividingBy: 1) != 0 {
+                    return String(format: "%.1f", size)
+                }
+                
+                return String(format: "%.0f", size)
+                
             }
             
             var priceString: String? {
@@ -118,11 +117,12 @@ struct TableViewModel {
                 return priceString + " ₽"
             }
             
-            init(title: String, imageUrl: String, size: Float? = nil, isListElement: Bool = false, price: Float,
+            init(title: String, imageUrl: String, size: Float? = nil, count: Int, isListElement: Bool = false, price: Float,
                  baseDiscountPercent: Int) {
                 self.title = title
                 self.imageUrl = imageUrl
                 self.size = size
+                self.count = count
                 self.isListElement = isListElement
                 self.price = price
                 self.baseDiscountPercent = baseDiscountPercent
