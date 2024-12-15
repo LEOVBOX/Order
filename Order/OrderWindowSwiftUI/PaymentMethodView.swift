@@ -66,10 +66,11 @@ struct PaymentMethodOptionView: View {
                 y: 0
             )
             .animation(.easeInOut(duration: 0.2), value: isSelected) // Анимация тени
+            .onTapGesture {
+                isSelected = optionIndex
+            }
         }
-        .onTapGesture {
-            isSelected = optionIndex
-        }
+       
     }
 }
 

@@ -25,6 +25,7 @@ struct OrderView: View {
                             .frame(height: 16)
                             .foregroundStyle(Color(r:246, g:246, b: 246))
                             
+                        // Способы оплаты
                         PaymentMethod(viewModel: [
                             PaymentMethodOption.sber.value,
                             PaymentMethodOption.debetCard.value,
@@ -38,9 +39,15 @@ struct OrderView: View {
                             .frame(height: 16)
                             .foregroundStyle(Color(r:246, g:246, b: 246))
                         
+                        // Список промокодов
                         PromocodesView()
+                        
+                        
+                        // Итог
+                        OrderSummaryView()
                     }
                 }
+                
             }
             .navigationTitle("Оформление заказа")
             .navigationBarTitleDisplayMode(.inline)
