@@ -70,7 +70,6 @@ struct OrderCompositionListView: View {
             OrderElement()
             OrderElement()
             OrderElement()
-            Spacer()
         }
         .frame(maxWidth: .infinity, alignment: .center)
         //.padding()
@@ -81,11 +80,10 @@ struct OrderCompositionView: View {
     var body: some View {
         VStack(spacing: 16){
             OrderСompositionLabelView()
-                
             OrderCompositionListView()
-                
         }
-        .padding()
+        .padding(.vertical, 24)
+        .padding(.horizontal, 16)
     }
 }
 
