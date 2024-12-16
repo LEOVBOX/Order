@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct ReviewUIKitWrapper: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> ReviewViewController {
-        return ReviewViewController()
+    func makeUIViewController(context: Context) -> ProductsViewController {
+        return ProductsViewController()
     }
     
-    func updateUIViewController(_ uiViewController: ReviewViewController, context: Context) {
+    func updateUIViewController(_ uiViewController: ProductsViewController, context: Context) {
         
     }
 }
 
-struct ReviewView: View {
+struct ReviewProductsListView: View {
     var body: some View {
         ReviewUIKitWrapper()
             .edgesIgnoringSafeArea(.all)

@@ -19,7 +19,7 @@ struct StartWindowView: View {
                         Text("Ввод промокода")
                     }
                     
-                    NavigationLink(destination: ReviewView()){
+                    NavigationLink(destination: ReviewProductsListView()){
                         Text("Отзыв")
                     }
                     

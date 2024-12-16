@@ -51,7 +51,6 @@
 		B3258AD62D0C802D006C73DA /* OrderWindowSwiftUI */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = OrderWindowSwiftUI; sourceTree = "<group>"; };
 		B391B89A2D0B06AE00496C5E /* Promocode */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Promocode; sourceTree = "<group>"; };
 		B391B89B2D0B074800496C5E /* Review */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Review; sourceTree = "<group>"; };
-		B391B89C2D0B07A900496C5E /* Products */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Products; sourceTree = "<group>"; };
 		B391B89D2D0B082E00496C5E /* PhotoCollection */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = PhotoCollection; sourceTree = "<group>"; };
 		B391B89E2D0B090A00496C5E /* OrderWindowUIKit */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = OrderWindowUIKit; sourceTree = "<group>"; };
 		B391B89F2D0B0B9200496C5E /* RejectWindow */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = RejectWindow; sourceTree = "<group>"; };
@@ -128,7 +127,6 @@
 				B391B89F2D0B0B9200496C5E /* RejectWindow */,
 				B391B89E2D0B090A00496C5E /* OrderWindowUIKit */,
 				B391B89D2D0B082E00496C5E /* PhotoCollection */,
-				B391B89C2D0B07A900496C5E /* Products */,
 				B391B89B2D0B074800496C5E /* Review */,
 				B391B89A2D0B06AE00496C5E /* Promocode */,
 				B38B95C62CDF261700BC3A0B /* Views */,
@@ -164,7 +162,6 @@
 				B3258AD62D0C802D006C73DA /* OrderWindowSwiftUI */,
 				B391B89A2D0B06AE00496C5E /* Promocode */,
 				B391B89B2D0B074800496C5E /* Review */,
-				B391B89C2D0B07A900496C5E /* Products */,
 				B391B89D2D0B082E00496C5E /* PhotoCollection */,
 				B391B89E2D0B090A00496C5E /* OrderWindowUIKit */,
 				B391B89F2D0B0B9200496C5E /* RejectWindow */,
