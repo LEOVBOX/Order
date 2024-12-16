@@ -26,21 +26,14 @@ struct OrderView: View {
                             .foregroundStyle(Color(r:246, g:246, b: 246))
                             
                         // Способы оплаты
-                        PaymentMethod(viewModel: [
-                            PaymentMethodOption.sber.value,
-                            PaymentMethodOption.debetCard.value,
-                            PaymentMethodOption.yaPaySplit.value,
-                            PaymentMethodOption.tbankCredit.value,
-                            PaymentMethodOption.tinkoffPay.value,
-                            PaymentMethodOption.cash.value
-                        ])
+                        PaymentMethod(viewModel: viewModel.paymentViewModels)
                         
                         Rectangle()
                             .frame(height: 16)
                             .foregroundStyle(Color(r:246, g:246, b: 246))
                         
                         // Список промокодов
-                        PromocodesView()
+                        PromocodesView(viewModel: self.viewModel)
                         
                         
                         // Итог

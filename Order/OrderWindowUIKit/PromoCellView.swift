@@ -107,13 +107,13 @@ class PromoCell: UITableViewCell {
     private func updateUI() {
         guard let viewModel else { return }
 
-        promoLabel.text = viewModel.title
+        promoLabel.text = viewModel.name
         switchButton.isOn = viewModel.isActive
-        dateLabel.text = viewModel.date
-        percentLabel.text = "\(viewModel.percent)%"
+        dateLabel.text = viewModel.dateString
+        percentLabel.text = viewModel.discountPercentString
 
         // Обновляем текст и видимость cautionLabel
-        if let infoText = viewModel.caution {
+        if let infoText = viewModel.description {
             cautionLabel.text = infoText
             cautionLabel.isHidden = false
         } else {

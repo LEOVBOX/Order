@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PromocodeView: View {
-    @ObservedObject var viewModel: PromocodeViewModel
+    @ObservedObject var viewModel: TableViewModel.ViewModelType.Promo
     
     var body: some View {
         ZStack {
@@ -158,6 +158,8 @@ struct HidePromocodesButton: View {
 
 struct PromocodesView: View {
     @State private var selectedOption: Int? = nil
+    
+    @ObservedObject var viewModel: OrderViewModel
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             VStack(alignment: .leading, spacing: 10) {
@@ -173,10 +175,9 @@ struct PromocodesView: View {
             
             
             VStack(alignment: .leading, spacing: 8) {
-                PromocodeView(viewModel: PromocodeViewModel(name: "HELLO",
-                                                            discountPercent: 5, date: Calendar.current.date(byAdding: .day, value: 10, to: Date()), description: "Промокод действует на первый заказ в приложении", isActive: false))
-                PromocodeView(viewModel: PromocodeViewModel(name: "HELLO",
-                                                            discountPercent: 5, date: Calendar.current.date(byAdding: .day, value: 10, to: Date()), isActive: false))
+                ForEach(viewModel.promoViewModels.indices, id: \.self) { index in
+                    PromocodeView(viewModel: viewModel.promoViewModels[index])
+                }
                 HidePromocodesButton()
             }
             

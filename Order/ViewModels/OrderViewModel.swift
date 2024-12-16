@@ -9,20 +9,18 @@ import Foundation
 
 class OrderViewModel: ObservableObject {
     
-    var order: Order {
-        didSet {
-            createProductsViewModels()
-        }
-    }
+    var order: Order
     
     init(order: Order) {
         self.order = order
         createProductsViewModels()
+        createPromoViewModels()
     }
     
     lazy var price: Double = 0
     lazy var promocodesDiscount: Double = 0
-    lazy var discountPercent: Int = 0
+    lazy var discountSummPercent: Int = 0
+    lazy var paymentDiscountPercent: Int = 0
     lazy var currentSumm: Double = 0
     
     // Closure для обновления интерфейса в ViewController
@@ -39,13 +37,28 @@ class OrderViewModel: ObservableObject {
     private lazy var toggledPromoCells: [TableViewModel.ViewModelType.Promo] = []
     lazy var cellViewModels: [TableViewModel] = []
     
+    lazy var paymentViewModels: [PaymentMethodViewModel] = PaymentMethodService.getAllPaymentMethodsViewModels()
     lazy var productsViewModels: [TableViewModel.ViewModelType.Product] = []
+    lazy var promoViewModels: [TableViewModel.ViewModelType.Promo] = []
     
     private func formattedDate(_ date: Date?) -> String {
         guard let date = date else { return "" }
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         return formatter.string(from: date)
+    }
+    
+    func createPromoViewModels() {
+        for promocode in order.promocodes {
+            var promocodeViewModel = TableViewModel.ViewModelType.Promo(
+                name: promocode.title,
+                discountPercent: promocode.percent,
+                date: promocode.endDate,
+                description: promocode.info,
+                isActive: promocode.active,
+                toggle: togglePromo(value:id:))
+            promoViewModels.append(promocodeViewModel)
+        }
     }
     
     func createProductsViewModels() {
@@ -61,9 +74,21 @@ class OrderViewModel: ObservableObject {
             productsViewModels.append(productViewModel)
         }
         
+        for promocode in promoViewModels {
+            // Увеличиваем скидку доступным количеством активных промокодов
+            if (toggledPromoCells.count != productsCount) && (promocode.isActive) {
+                discountSummPercent += promocode.discountPercent
+                toggledPromoCells.append(promocode)
+            }
+            else {
+                promocode.isActive = false
+            }
+            
+            cellViewModels.append(.init(type: .promo(promocode)))
+        }
     }
     
-    func createTable(order: Order) {
+    func createTable() {
         cellViewModels.removeAll()
         productsCount = order.products.count
         
@@ -79,27 +104,7 @@ class OrderViewModel: ObservableObject {
         ))))
         
         // Добавляем все промокоды из заказа
-        for promocode in order.promocodes {
-            var promoViewModel = TableViewModel.ViewModelType.Promo(
-                title: promocode.title,
-                percent: promocode.percent,
-                date: formattedDate(promocode.endDate),
-                caution: promocode.info,
-                isActive: promocode.active,
-                toggle: togglePromo(value:id:)
-            )
-            
-            // Увеличиваем скидку доступным количеством активных промокодов
-            if (toggledPromoCells.count != productsCount) && (promoViewModel.isActive) {
-                discountPercent += promocode.percent
-                toggledPromoCells.append(promoViewModel)
-            }
-            else {
-                promoViewModel.isActive = false
-            }
-            
-            cellViewModels.append(.init(type: .promo(promoViewModel)))
-        }
+        createPromoViewModels()
         
         cellViewModels.append(.init(type: .button(.init(imageName: nil, title: "Скрыть промокоды", backgroundHexColor: "#FF46100", titleHexColor: "#FF4611"))))
         
@@ -109,7 +114,7 @@ class OrderViewModel: ObservableObject {
         }
         
         for promo in toggledPromoCells {
-            promocodesDiscount += price * (Double(promo.percent) / 100.0)
+            promocodesDiscount += price * (Double(promo.discountPercent) / 100.0)
         }
         
         currentSumm = price - promocodesDiscount
@@ -139,7 +144,7 @@ class OrderViewModel: ObservableObject {
         
         // Вычисляем скидку от активных промокодов
         for promo in toggledPromoCells {
-            promocodesDiscount += price * (Double(promo.percent) / 100.0)
+            promocodesDiscount += price * (Double(promo.discountPercent) / 100.0)
         }
         
         currentSumm = price - promocodesDiscount

@@ -10,22 +10,74 @@ import Foundation
 struct TableViewModel {
     // Models for table cells
     enum ViewModelType {
-        struct Promo {
+        class Promo: ObservableObject {
             let id: String = UUID().uuidString
-            let title: String
-            let percent: Int
-            let date: String
-            let caution: String?
-            var isActive: Bool
             let toggle: ((Bool, String) -> Void)?
+            var name: String
+            var discountPercent: Int
+            var discountPercentString: String {
+                return "-\(discountPercent)%"
+            }
+            var date: Date?
+            var dateString: String? {
+                guard let date = date else {
+                    return nil
+                }
+                
+                let formatter = DateFormatter()
+
+                formatter.dateFormat = "MMMM"
+                formatter.locale = Locale(identifier: "ru_RU")
+
+                let monthName = formatter.string(from: date)
+                
+                let formatedMonthName: String = {
+                    switch monthName {
+                    case "январь":
+                         return "января"
+                    case "февраль":
+                        return "февраля"
+                    case "март":
+                        return "марта"
+                    case "апрель":
+                        return "апреля"
+                    case "май":
+                        return "мая"
+                    case "июнь":
+                        return "июня"
+                    case "июль":
+                        return "июля"
+                    case "август":
+                        return "августа"
+                    case "сентябрь":
+                        return "сентября"
+                    case "октябрь":
+                        return "октября"
+                    case "ноябрь":
+                        return "ноября"
+                    case "декабрь":
+                        return "декабря"
+                    default:
+                        return monthName
+                    }
+                }()
+                
+                formatter.dateFormat = "dd"
+                let dayString = formatter.string(from: date)
+                
+                return "По \(dayString) \(String(describing: formatedMonthName))"
+            }
             
-            init(title: String, percent: Int, date: String, caution: String? = nil, isActive: Bool, toggle: (((Bool, String) -> Void))? = nil) {
-                self.title = title
-                self.percent = percent
-                self.caution = caution
+            var description: String?
+            @Published var isActive: Bool
+            
+            init(name: String, discountPercent: Int, date: Date? = nil, description: String? = nil, isActive: Bool, toggle: ((Bool, String) -> Void)? = nil) {
+                self.name = name
+                self.discountPercent = discountPercent
+                self.description = description
                 self.isActive = isActive
-                self.toggle = toggle
                 self.date = date
+                self.toggle = toggle
             }
         }
         
@@ -34,13 +86,22 @@ struct TableViewModel {
             let info: String
         }
         
-        struct Result {
-            var summ: Double
-            let productsCount: Int
-            let baseDiscount: Double?
-            var promocodesDiscount: Double
-            let paymentDiscount: Double?
-            let price: Double
+        class Result: ObservableObject {
+            @Published var summ: Double
+            @Published var productsCount: Int
+            @Published var baseDiscount: Double? = nil
+            @Published var promocodesDiscount: Double
+            @Published var paymentDiscount: Double? = nil
+            @Published var price: Double
+            
+            init(summ: Double, productsCount: Int, baseDiscount: Double? = nil, promocodesDiscount: Double, paymentDiscount: Double? = nil, price: Double) {
+                self.summ = summ
+                self.productsCount = productsCount
+                self.baseDiscount = baseDiscount
+                self.promocodesDiscount = promocodesDiscount
+                self.paymentDiscount = paymentDiscount
+                self.price = price
+            }
         }
         
         struct Button {

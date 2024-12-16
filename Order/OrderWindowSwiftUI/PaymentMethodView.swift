@@ -44,8 +44,10 @@ struct PaymentMethodOptionView: View {
                     set: { newValue in
                         if newValue {
                             isSelected = optionIndex
+                            viewModel.isSelected = true
                         } else {
                             isSelected = nil
+                            viewModel.isSelected = true
                         }
                     }
                 ))

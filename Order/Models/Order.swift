@@ -45,7 +45,7 @@ let testOrder = Order(
     screenTitle: "Ваш заказ",
     promocodes: [
         Order.Promocode(
-            title: "Промокод на 5% kljhkjhlkjhlkjhlkjhlkjhlkjhlkjhkljhlkjhlkjhlkjhkljh",
+            title: "Промокод на 5%",
             percent: 5,
             endDate: Calendar.current.date(byAdding: .day, value: 10, to: Date()),
             info: "Скидка 5% на все товары",
@@ -64,6 +64,27 @@ let testOrder = Order(
             endDate: Calendar.current.date(byAdding: .day, value: 20, to: Date()),
             info: "Скидка 10% на определенные товары",
             active: false
+        ),
+        Order.Promocode(
+            title: "SUPERSALE",
+            percent: 50,
+            endDate: Calendar.current.date(byAdding: .day, value: 10, to: Date()),
+            info: "Скидка 50% на все товары",
+            active: true
+        ),
+        Order.Promocode(
+            title: "Aboba",
+            percent: 50,
+            endDate: Calendar.current.date(byAdding: .day, value: 10, to: Date()),
+            info: "Скидка 50% на все товары",
+            active: true
+        ),
+        Order.Promocode(
+            title: "DIS",
+            percent: 50,
+            endDate: Calendar.current.date(byAdding: .day, value: 10, to: Date()),
+            info: "Скидка 50% на все товары",
+            active: true
         )
     ],
     availableForActive: [

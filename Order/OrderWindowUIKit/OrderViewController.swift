@@ -18,7 +18,7 @@ class OrderViewController: UIViewController {
         
         self.navigationItem.title = order.screenTitle
 
-        viewModel.createTable(order: order)
+        viewModel.createTable()
     }
     
     private func showPromocodeViewController() {
